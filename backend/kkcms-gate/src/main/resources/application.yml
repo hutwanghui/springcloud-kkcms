@@ -1,0 +1,128 @@
+server:
+    port: 8965
+    session:
+      timeout: 600
+
+
+spring:
+  application:
+    name: kkcms-gate
+  redis:
+    host: localhost
+    database: 8
+    pool:
+      max-active: 8
+      min-idle: 0
+      max-idle: 0
+      max-wait: -1
+    password: wh970121
+  datasource:
+      name: kkcms
+      url: jdbc:mysql://127.0.0.1:3306/kkcms?useUnicode=true&characterEncoding=UTF8&useSSL=true
+      username: root
+      password: wh970121
+      driver-class-name: com.mysql.jdbc.Driver
+eureka:
+    client:
+        serviceUrl:
+            defaultZone: http://localhost:8961/eureka/
+
+ribbon:
+  eureka:
+    enabled: true
+  ReadTimeout: 5000
+  ConnectTimeout: 500
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          isolation:
+            thread:
+              timeoutInMillseconds: 60000
+
+feign:
+  compression:
+  #开启请求和响应的GZIP的，减少性能消耗
+    request:
+      enabled: true
+      mime-types: text/xml,application/xml,application/json
+      min-request-size: 2048
+    response:
+      enabled: true
+  #开启熔断器
+  hystrix:
+    enabled: true
+
+logging:
+  level:
+    com:
+      kk:
+        gate:
+          feign:
+            IUserAuthFeign: DEBUG
+
+#
+#zuul:
+#  routes:
+#    kkcms-user:
+#      path: /kkcms-user/**
+#      url: http://localhost:8964/
+#      serviceId: kkcms-user
+#    kkcms-api:
+#      path: /kkcms-api/**
+#      url: http://localhost:8962/
+#      serviceId: kkcms-api
+#  sensitive-headers:
+
+
+
+com:
+  kk:
+    security:
+      browser:
+        loginPage: /login.html
+        sessionInvalidPage: /session/invalid
+        maximumSessions: 1
+        isPreventsLogin: false
+    validate:
+      imageCode:
+        size: 4
+        width: 100
+        height: 30
+        expireIn: 360
+        url: /code/image
+      smsCode:
+        size: 5
+        expireIn: 300
+        url: /code/sms
+
+    sdk:
+      txmessage:
+        appKey: bb458f9ceedd6a8b33008fabcf034829
+        appId: 1400065945
+        smsModuleId: 81401
+        smsSignId: 37034
+    social:
+      filterProcessesUrl: /auth
+      qq:
+        appId:
+        appSecret:
+        providerId:
+
+security:
+  oauth2:
+    client:
+      client-id: kkcms-client
+      client-secret: kkcms-secret
+    resource:
+      filter-order: 3
+    token:
+      store:
+        type: jwt
+
+
+
+
+

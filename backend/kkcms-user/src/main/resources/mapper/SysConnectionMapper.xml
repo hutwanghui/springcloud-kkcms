@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kk.user.mapper.SysConnectionMapper">
+    <resultMap id="BaseResultMap" type="com.kk.user.entity.SysConnection">
+        <!--
+          WARNING - @mbggenerated
+        -->
+        <id column="userId" property="userid" jdbcType="VARCHAR"/>
+        <id column="providerId" property="providerid" jdbcType="VARCHAR"/>
+        <id column="providerUserId" property="provideruserid" jdbcType="VARCHAR"/>
+        <result column="rank" property="rank" jdbcType="INTEGER"/>
+        <result column="displayName" property="displayname" jdbcType="VARCHAR"/>
+        <result column="profileUrl" property="profileurl" jdbcType="VARCHAR"/>
+        <result column="imageUrl" property="imageurl" jdbcType="VARCHAR"/>
+        <result column="accessToken" property="accesstoken" jdbcType="VARCHAR"/>
+        <result column="secret" property="secret" jdbcType="VARCHAR"/>
+        <result column="refreshToken" property="refreshtoken" jdbcType="VARCHAR"/>
+        <result column="expireTime" property="expiretime" jdbcType="BIGINT"/>
+    </resultMap>
+    <select id="getByUserId" resultMap="BaseResultMap" parameterType="string">
+      select *
+      FROM sys_userconnection WHERE userId='${userId}'
+  </select>
+</mapper>

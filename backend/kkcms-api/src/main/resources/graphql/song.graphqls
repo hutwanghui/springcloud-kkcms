@@ -1,0 +1,83 @@
+schema {
+    query: Query
+    mutation: Mutation
+}
+scalar DateTime
+type MomentItem{
+    moment: Moment
+    user: User
+    userList: [User]
+    commentItemList: [CommentItem]
+}
+type CommentItem{
+    comment: Comment
+    user: User
+}
+
+type Song{
+    id: ID!
+    name: String
+    author: String
+}
+type Comment{
+    id: ID!
+    userId: Long
+    date: DateTime
+    toid: Long
+    momentid: Long
+    content: String
+}
+type Moment{
+    id: ID!
+    userId: Long
+    date: String
+    content: String
+    praiseuseridlist: String
+    picturelist: String
+}
+type Parise{
+    id: ID!
+    momentId: Int
+    userId: Long
+    date: String
+}
+type User{
+    id: ID!
+    name: String
+    head: String
+}
+input SongInput{
+    id: ID!
+    name: String
+    author: String
+}
+input CommentInput{
+    userId: Long
+    date: DateTime
+    toid: Long
+    momentid: Long
+    content: String
+}
+input CommentUpdate{
+    id:Int!
+    userId: Long
+    date: DateTime
+    toid: Long
+    momentid: Long
+    content: String
+}
+type Query {
+    findSongById (id : ID): Song
+    findAllSong: [Song]!
+    countSongs: Long!
+    findAllCommentByUserId(userId: Long):[Comment]
+    findAllComment: [Comment]
+    findAllMomentByUserId(userId: Long):[Moment]
+    findAllMoment: [MomentItem]
+}
+type Mutation {
+    newSong (song:SongInput): Song
+    newComment(comment:CommentInput):Comment
+    updateComment(comment:CommentUpdate):Comment
+    deleteComment(comment:CommentUpdate):Comment
+}

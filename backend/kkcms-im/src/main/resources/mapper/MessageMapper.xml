@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kk.mapper.MessageMapper">
+    <resultMap id="BaseResultMap" type="com.kk.entity.Message">
+        <!--
+          WARNING - @mbggenerated
+        -->
+        <id column="ID" property="id" jdbcType="DECIMAL"/>
+        <result column="AUTHOR" property="author" jdbcType="VARCHAR"/>
+        <result column="TEXT" property="text" jdbcType="VARCHAR"/>
+        <result column="THREAD" property="thread" jdbcType="VARCHAR"/>
+        <result column="SENDTIME" property="sendtime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <insert id="testInsert">
+    insert into MESSAGE(AUTHOR,TEXT,THREAD,SENDTIME) VALUES (#{message.author},#{message.text},#{message.thread},#{message.sendtime})
+  </insert>
+</mapper>

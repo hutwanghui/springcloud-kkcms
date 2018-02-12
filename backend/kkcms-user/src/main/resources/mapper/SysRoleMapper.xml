@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kk.user.mapper.SysRoleMapper">
+    <resultMap id="BaseResultMap" type="com.kk.user.entity.SysRole">
+        <!--
+          WARNING - @mbggenerated
+        -->
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="code" property="code" jdbcType="VARCHAR"/>
+        <result column="role_name" property="roleName" jdbcType="VARCHAR"/>
+    </resultMap>
+    <select id="getListByUsername" resultMap="BaseResultMap">
+        SELECT sr.id,sr.code,sr.role_name FROM sys_role sr
+        JOIN sys_role_user sru
+        JOIN user u
+        WHERE sru.sys_user_id=u.id
+        AND sru.sys_role_id=sr.id
+        AND u.username='${username}'
+    </select>
+</mapper>

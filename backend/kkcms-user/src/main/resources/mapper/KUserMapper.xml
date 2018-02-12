@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kk.user.mapper.KUserMapper">
+    <resultMap id="BaseResultMap" type="com.kk.user.entity.KUser">
+        <!--
+          WARNING - @mbggenerated
+        -->
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="username" property="username" jdbcType="VARCHAR"/>
+        <result column="password" property="password" jdbcType="VARCHAR"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="birthday" property="birthday" jdbcType="VARCHAR"/>
+        <result column="address" property="address" jdbcType="VARCHAR"/>
+        <result column="mobile" property="mobile" jdbcType="VARCHAR"/>
+        <result column="email" property="email" jdbcType="VARCHAR"/>
+        <result column="sex" property="sex" jdbcType="CHAR"/>
+        <result column="status" property="status" jdbcType="CHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="tag" property="tag" jdbcType="VARCHAR" />
+        <result column="head" property="head" jdbcType="VARCHAR" />
+        <result column="contactIdList" property="contactidlist" jdbcType="VARCHAR" />
+    </resultMap>
+    <sql id="allInfo">
+      `id`,
+      `username`,
+      `password`,
+      `name`,
+      `address`,
+      `mobile`,
+      `email`,
+      `sex`,
+      `status `,
+      `create_time`,
+      `update_time`
+    </sql>
+    <sql id="basicInfo">
+      `id`,
+      `username`,
+      `name`,
+      `address`,
+      `mobile`,
+      `email`,
+      `sex`
+  </sql>
+    <sql id="detailInfo">
+      `id`,
+      `username`,
+      `password`,
+      `status`,
+      `create_time`,
+      `update_time`
+  </sql>
+    <sql id="registInfo">
+      `username`,
+      `password`,
+      `name`,
+      `birthday`,
+      `mobile`,
+      `create_time`
+    </sql>
+    <select id="getByUsername" resultMap="BaseResultMap" parameterType="string" statementType="PREPARED">
+        SELECT
+        <include refid="detailInfo"/>
+        from user WHERE username=#{userName}
+    </select>
+    <select id="getByKey" resultMap="BaseResultMap" parameterType="string" statementType="PREPARED">
+        SELECT
+        <include refid="basicInfo"/>
+        FROM user
+        <where>
+            <if test="kUser.username!=null and kUser.username!=''">
+                UPPER(username) like UPPER('%${kUser.username}%')
+            </if>
+            <if test="kUser.name!=null and kUser.name!=''">
+                AND `name` LIKE '%${kUser.name}%'
+            </if>
+            <if test="kUser.mobile!=null and kUser.mobile!=''">
+                AND mobile = ${kUser.mobile}
+            </if>
+            <if test="kUser.sex!=null and kUser.sex!=''">
+                AND sex = ${kUser.sex}
+            </if>
+        </where>
+    </select>
+    <select id="getByEmail" resultMap="BaseResultMap">
+        SELECT id,email FROM user WHERE email='${email}'
+    </select>
+    <select id="getByMobilePhone" resultMap="BaseResultMap">
+        SELECT DISTINCT <include refid="detailInfo"/>
+        FROM user WHERE mobile='${mobile}'
+    </select>
+</mapper>

@@ -1,0 +1,73 @@
+server:
+    port: 8960
+    session:
+      timeout: 600
+
+spring:
+  aop:
+      proxy-target-class: true
+  application:
+    name: kkcms-zuul
+  session:
+    store-type: redis
+  redis:
+      host: localhost
+      database: 8
+      pool:
+        max-active: 8
+        min-idle: 0
+        max-idle: 0
+        max-wait: -1
+      password: wh970121
+
+eureka:
+    client:
+        serviceUrl:
+            defaultZone: http://localhost:8961/eureka/
+
+zuul:
+  host:
+    max-total-connections: 500 # 每个服务的http客户端连接池最大连接，默认值是200
+    max-per-route-connections: 50 # 每个route可用的最大连接数，默认值是20
+  routes:
+    kkcms-user:
+      path: /kkcms-user/**
+      url: http://localhost:8964/
+      serviceId: kkcms-user
+    kkcms-api:
+      path: /kkcms-api/**
+      url: http://localhost:8962/
+      serviceId: kkcms-api
+    kkcms-gate:
+      path: /kkcms-gate/**
+      url: http://localhost:8965/
+      serviceId: kkcms-gate
+  sensitive-headers:
+  add-proxy-headers: true
+
+security:
+  basic:
+    enabled: false
+  user:
+    name: admin
+    password: admin123456
+
+#security:
+#  oauth2:
+#    client:
+#      client-id: kkcms-client
+#      client-secret: kkcms-secret
+#      access-token-uri: http://localhost:8080/uaa/oauth/token
+#      user-authorization-uri: http://localhost:8080/uaa/oauth/authorize
+#    resource:
+#      user-info-uri: http://localhost:8080/uaa/user
+#      prefer-token-info: false
+#    token:
+#      store:
+#        type: redis
+
+turbine:
+  aggregator:
+    clusterConfig: default  #turbine监控的服务名称，可以多个
+  appConfig: kkcms-gate  #turbine监控的服务，可以有多个
+  clusterNameExpression: new String("default")

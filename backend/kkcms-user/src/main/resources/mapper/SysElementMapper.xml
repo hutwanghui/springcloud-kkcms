@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kk.user.mapper.SysElementMapper">
+    <resultMap id="BaseResultMap" type="com.kk.user.entity.SysElement">
+        <!--
+          WARNING - @mbggenerated
+        -->
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="element_type" property="elementType" jdbcType="INTEGER"/>
+        <result column="menu_id" property="menuId" jdbcType="INTEGER"/>
+        <result column="code" property="code" jdbcType="VARCHAR"/>
+        <result column="element_name" property="elementName" jdbcType="VARCHAR"/>
+        <result column="uri" property="uri" jdbcType="VARCHAR"/>
+        <result column="method" property="method" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <select id="getAuthorityElementsByUsername" resultMap="BaseResultMap" parameterType="integer">
+    SELECT se.* FROM user u
+    JOIN sys_role_user sru ON u.id=sru.sys_user_id
+    JOIN sys_authoriry sa ON sa.role_id=sru.sys_role_id
+    JOIN sys_element se ON sa.resource_id=se.id
+    WHERE u.username= '${username}'
+  </select>
+    <select id="getListByRole" resultMap="BaseResultMap" parameterType="string">
+      SELECT se.* FROM sys_element se
+      JOIN sys_authoriry sa ON se.id=sa.resource_id
+      JOIN sys_role sr ON sr.id=sa.role_id
+      WHERE sr.code = '${role}'
+    </select>
+    <select id="getListByMenuId" resultMap="BaseResultMap" parameterType="integer">
+        SELECT se.* FROM sys_element se
+        WHERE se.menu_id='${menuId}'
+    </select>
+</mapper>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kk.api.mapper.CommentMapper">
+    <resultMap id="BaseResultMap" type="com.kk.api.entity.Comment">
+        <!--
+          WARNING - @mbggenerated
+        -->
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="user_id" property="userId" jdbcType="BIGINT"/>
+        <result column="date" property="date" jdbcType="TIMESTAMP"/>
+        <result column="toId" property="toid" jdbcType="BIGINT"/>
+        <result column="momentId" property="momentid" jdbcType="BIGINT"/>
+        <result column="content" property="content" jdbcType="VARCHAR"/>
+    </resultMap>
+    <select id="selectByMomentId" resultMap="BaseResultMap">
+      select * FROM comment WHERE momentId=#{momentId}
+  </select>
+</mapper>

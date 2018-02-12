@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>station</title>
+    <link rel="shortcut icon" type="image/png" href="./fav.ico"/>
+    <link rel="stylesheet" href="css/login.css"/>
+</head>
+<body>
+<div class="container">
+    <div class="logo">
+        <a>FCat</a>
+    </div>
+    <div class="form-box">
+        <div class="sign-tab">
+            <span id="mBtn">短信登录</span>
+            <span id="nBtn" class="on">密码登录</span>
+        </div>
+
+        <!-- 手机登录 -->
+        <div id="mForm" class="formbox" style="display: none;">
+            <form class="form" id="f1" action="/authentication/mobile" method="post">
+                <p class="inp"><input class="f-m" autofocus id="mobile" name="mobile" placeholder="请输入手机号" type="text">
+                </p>
+                <p class="inp3"><input class="f-y" id="sms" name="smsCode" placeholder="验证码" type="text">
+                    <input id="getsms" type="button" value="获取验证码">
+                <p class="inp2"><input type="button" value="登录" id="mLogin"></p>
+            </form>
+        </div>
+        <!-- 用户名登录 -->
+        <div id='nForm' class="formbox">
+            <form class="form" id="f2" action="" method="post">
+                <p class="inp"><input class="f-u" id="username" name="username" placeholder="请输入用户名" type="text"></p>
+                <p class="inp"><input class="f-p" id="password" name="password" placeholder="密码" type="password"></p>
+                <p class="inp2"><input type="button" value="登录" id="nLogin"></p>
+                <div class="submit">
+            <span>
+            <div class="code">
+                <div class="arrow"></div>
+                <div class="code-img">
+                    <img src="/code/image" alt="点击更换" title="点击更换"
+                         onclick="this.src='/code/image?_='+Date.now()" class="vcode" name="codeimage"
+                         id="codeimage" border="0"/>
+                </div>
+                <a href="JavaScript:void(0);" id="hide" class="close" title="关闭"><i></i></a><a
+                    href="JavaScript:void(0);"
+                    onclick="javascript:document.getElementById('codeimage').src='/code/image?_='+Date.now();"
+                    class="change"
+                    title="看不清,点击更换验证码"><i></i></a>
+            </div>
+            <input name="imageCode" data-rule="验证码:required;" type="text" class="input-code" id="imageCode"
+                   placeholder="输入验证" title="验证码为4个字符" autocomplete="off" value="">
+            </span>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+<script src='./js/jquery-2.1.1.min.js'></script>
+<script>
+    // tabs切换
+    $('#mBtn').click(function () {
+        $('#mForm').show();
+        $('#nForm').hide();
+        $(this).addClass('on');
+        $('#nBtn').removeClass('on');
+    });
+    $('#nBtn').click(function () {
+        $('#nForm').show();
+        $('#mForm').hide();
+        $(this).addClass('on');
+        $('#mBtn').removeClass('on');
+    });
+    //短信登陆
+    $("#mLogin").click(function () {
+        var mobile = $("#mobile").val();
+        var smsCode = $("#sms").val();
+        alert("55555");
+        $.ajax({
+            type: 'POST',
+            url: '/authentication/mobile',
+            data: {
+                "mobile": mobile,
+                "smsCode": smsCode
+            },
+            success: function (data) {
+                console.log(data);
+                if (data.data && data.data.success /*&& data.data.userDetails.username*/) {
+                    window.location.href = "index.html";
+                }
+            }
+        })
+    })
+    // 用户名登录
+    $('#nLogin').click(function () {
+        //$("#f2").submit();
+        var username = $("#username").val();
+        var password = $("#password").val();
+        var imageCode = $("#imageCode").val();
+        alert(username);
+        $.ajax({
+            type: 'POST',
+            url: '/authentication/form',
+            data: {
+                "username": username,
+                "password": password,
+                "imageCode": imageCode
+            },
+            xhrFields: {
+                withCredentials: true
+            },
+            crossDomain: true,
+            success: function (data) {
+                console.log(data);
+                if (data.data && data.data.success /*&& data.data.userDetails.username*/) {
+                   // window.location.href = "index.html";
+                }
+            }
+        })
+    });
+    $("#getsms").click(function () {
+        getCode();
+        var get_code = $("#getsms");
+        time(get_code);
+    });
+
+
+    // 获取验证码
+    function getCode() {
+        var mobile = $("#mobile").val();
+
+        alert("666");
+        var get_code_url = "/code/sms";
+        $.ajax({
+            type: "GET",
+            url: get_code_url,
+            data: {"mobile": mobile},
+            dataType: "json"
+        });
+    }
+    //验证码倒计时
+    var wait = 60;//时间
+    function time(o, p) {//o为按钮的对象，p为可选，这里是60秒过后，提示文字的改变
+        if (wait == 0) {
+            o.removeAttr("disabled");
+            o.val("获取验证码");//改变按钮中value的值
+            p.html("如果您在1分钟内没有收到验证码，请检查您填写的手机号码是否正确或重新发送");
+            wait = 60;
+        } else {
+            o.attr("disabled", true);//倒计时过程中禁止点击按钮
+            o.val("倒数" + wait + "秒");//改变按钮中value的值
+            wait--;
+            setTimeout(function () {
+                    time(o, p);//循环调用
+                },
+                1000)
+        }
+    }
+</script>
+
+</body>
+</html>

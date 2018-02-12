@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kk.api.mapper.MomentMapper">
+    <resultMap id="BaseResultMap" type="com.kk.api.entity.Moment">
+        <!--
+          WARNING - @mbggenerated
+        -->
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="user_id" property="userId" jdbcType="BIGINT"/>
+        <result column="date" property="date" jdbcType="TIMESTAMP"/>
+        <result column="content" property="content" jdbcType="VARCHAR"/>
+        <result column="praiseUserIdList" property="praiseuseridlist" jdbcType="VARCHAR"/>
+        <result column="pictureList" property="picturelist" jdbcType="LONGVARCHAR"/>
+    </resultMap>
+</mapper>

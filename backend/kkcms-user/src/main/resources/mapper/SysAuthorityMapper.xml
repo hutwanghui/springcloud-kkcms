@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kk.user.mapper.SysAuthorityMapper">
+    <resultMap id="BaseResultMap" type="com.kk.user.entity.SysAuthority">
+        <!--
+          WARNING - @mbggenerated
+        -->
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="role_id" property="roleId" jdbcType="INTEGER"/>
+        <result column="resource_id" property="resourceId" jdbcType="INTEGER"/>
+        <result column="type_id" property="typeId" jdbcType="INTEGER"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <select id="getListByRoleId" resultMap="BaseResultMap" parameterType="integer">
+      SELECT * FROM sys_authoriry WHERE role_id='${roleId}'
+  </select>
+    <delete id="deleteByRoleId">
+        DELETE FROM sys_authoriry
+        WHERE role_id='${roleId}'
+    </delete>
+</mapper>
