@@ -12,7 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 /**
  * Created by msi- on 2018/2/8.
@@ -42,27 +46,22 @@ public class FindAllDataFetcher<T> implements DataFetcher<List<T>> {
             comment.setUserId(dataFetchingEnvironment.getArgument("userId"));
             return (List<T>) commentService.selectList(comment);
         } else if (chooseService.equals("Moment")) {
-            List<Moment> momentList = momentService.selectListAll();
-            List<MomentItem> momentItemList = new ArrayList<>();
-
-            for (Moment moment : momentList) {
-                MomentItem momentItem = new MomentItem();
-                List<Comment> commentList = commentService.selectByMomentId(moment.getId());
-                List<CommentItem> commentItem = new ArrayList<>();
-                for (Comment comment : commentList) {
-                    CommentItem commentItem1 = new CommentItem();
-                    commentItem1.setComment(comment);
-                    commentItem1.setUser(userService.selectById(comment.getUserId().intValue()));
-                    commentItem1.setToUser(userService.selectById(comment.getToid().intValue()));
-                    commentItem.add(commentItem1);
-                }
-                momentItem.setMoment(moment);
-                momentItem.setUser(userService.selectById(moment.getUserId().intValue()));
-                System.out.print(moment.getPraiseuseridlist());
-                momentItem.setCommentItemList(commentItem);
-                momentItemList.add(momentItem);
-            }
-            return (List<T>) momentItemList;
+            List<Comment> momentItemList = commentService.getMomentItem();
+            Map<Moment, List<CommentItem>> map = momentItemList.stream().collect(Collectors.groupingBy(comment -> comment.getMoment(), Collectors.mapping(comment -> comment.getBase(), Collectors.toList())));
+            List<MomentItem> momentItems = new ArrayList<>();
+            map.forEach((key, value) -> {
+                        MomentItem momentItem = new MomentItem();
+                        momentItem.setMoment(key);
+                        momentItem.setUser(key.getUser());
+                        momentItem.setCommentItemList(value);
+                        List<User> pariseList = new ArrayList<>();
+                        List<String> userIdList = Arrays.asList(key.getPraiseuseridlist().substring(1, key.getPraiseuseridlist().length() - 1).split(", "));
+                        userIdList.stream().forEach(userid -> pariseList.add(userService.findPraiseuserUserlist(Integer.valueOf(userid))));
+                        momentItem.setUserList(pariseList);
+                        momentItems.add(momentItem);
+                    }
+            );
+            return (List<T>) momentItems;
         } else if (chooseService.equals("MomentByUserId")) {
             Moment moment = new Moment();
             moment.setUserId(dataFetchingEnvironment.getArgument("userId"));

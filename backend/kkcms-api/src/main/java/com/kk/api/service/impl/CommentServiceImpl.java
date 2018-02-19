@@ -17,4 +17,9 @@ public class CommentServiceImpl extends BaseServiceImpl<CommentMapper, Comment> 
     public List<Comment> selectByMomentId(int userId) {
         return mapper.selectByMomentId(userId);
     }
+
+    @Override
+    public List<Comment> getMomentItem() {
+        return mapper.getMomentItem();
+    }
 }

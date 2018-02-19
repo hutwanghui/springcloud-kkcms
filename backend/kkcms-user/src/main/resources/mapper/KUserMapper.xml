@@ -17,9 +17,6 @@
         <result column="status" property="status" jdbcType="CHAR"/>
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
-        <result column="tag" property="tag" jdbcType="VARCHAR" />
-        <result column="head" property="head" jdbcType="VARCHAR" />
-        <result column="contactIdList" property="contactidlist" jdbcType="VARCHAR" />
     </resultMap>
     <sql id="allInfo">
       `id`,
@@ -87,7 +84,8 @@
         SELECT id,email FROM user WHERE email='${email}'
     </select>
     <select id="getByMobilePhone" resultMap="BaseResultMap">
-        SELECT DISTINCT <include refid="detailInfo"/>
+        SELECT DISTINCT
+        <include refid="detailInfo"/>
         FROM user WHERE mobile='${mobile}'
     </select>
 </mapper>

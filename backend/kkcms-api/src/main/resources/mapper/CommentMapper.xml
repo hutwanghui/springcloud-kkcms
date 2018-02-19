@@ -12,7 +12,22 @@
         <result column="momentId" property="momentid" jdbcType="BIGINT"/>
         <result column="content" property="content" jdbcType="VARCHAR"/>
     </resultMap>
+    <resultMap id="OtherResultMap" type="com.kk.api.entity.Comment">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="user_id" property="userId" jdbcType="BIGINT"/>
+        <result column="date" property="date" jdbcType="TIMESTAMP"/>
+        <result column="toId" property="toid" jdbcType="BIGINT"/>
+        <result column="momentId" property="momentid" jdbcType="BIGINT"/>
+        <result column="content" property="content" jdbcType="VARCHAR"/>
+        <association property="moment" column="momentId" select="com.kk.api.mapper.MomentMapper.selectById"/>
+        <association property="user" column="user_id" select="com.kk.api.mapper.UserMapper.selectById"/>
+        <association property="touser" column="toid" select="com.kk.api.mapper.UserMapper.selectById"/>
+    </resultMap>
+
     <select id="selectByMomentId" resultMap="BaseResultMap">
       select * FROM comment WHERE momentId=#{momentId}
   </select>
+    <select id="getMomentItem" resultMap="OtherResultMap">
+        select * FROM comment
+    </select>
 </mapper>

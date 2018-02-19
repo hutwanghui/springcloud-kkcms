@@ -6,17 +6,26 @@ import java.util.List;
  * Created by msi- on 2018/2/11.
  */
 public class CommentItem extends BaseModel {
-    private Comment comment;
+    /*private Comment comment;*/
+    private String content;
     private User user;
-    private User toUser;
-    private List<CommentItem> childList;
+    private User touser;
+/*    private List<CommentItem> childList;*/
 
-    public Comment getComment() {
+    /*public Comment getComment() {
         return comment;
     }
 
     public void setComment(Comment comment) {
         this.comment = comment;
+    }*/
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public User getUser() {
@@ -27,19 +36,19 @@ public class CommentItem extends BaseModel {
         this.user = user;
     }
 
-    public User getToUser() {
-        return toUser;
+    public User getTouser() {
+        return touser;
     }
 
-    public void setToUser(User toUser) {
-        this.toUser = toUser;
+    public void setTouser(User touser) {
+        this.touser = touser;
     }
 
-    public List<CommentItem> getChildList() {
-        return childList;
-    }
-
-    public void setChildList(List<CommentItem> childList) {
-        this.childList = childList;
-    }
+//    public List<CommentItem> getChildList() {
+//        return childList;
+//    }
+//
+//    public void setChildList(List<CommentItem> childList) {
+//        this.childList = childList;
+//    }
 }

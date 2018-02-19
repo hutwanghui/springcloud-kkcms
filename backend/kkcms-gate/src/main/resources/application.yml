@@ -33,16 +33,11 @@ ribbon:
   ReadTimeout: 5000
   ConnectTimeout: 500
 
-hystrix:
-  command:
-    default:
-      execution:
-        isolation:
-          isolation:
-            thread:
-              timeoutInMillseconds: 60000
 
 feign:
+  #开启熔断器
+  hystrix:
+    enable: true
   compression:
   #开启请求和响应的GZIP的，减少性能消耗
     request:
@@ -51,9 +46,14 @@ feign:
       min-request-size: 2048
     response:
       enabled: true
-  #开启熔断器
-  hystrix:
-    enabled: true
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMillseconds: 60000
 
 logging:
   level:

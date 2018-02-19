@@ -63,6 +63,9 @@ eureka:
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.kk.api.entity
+  configuration:
+    lazy-loading-enabled: true
 
 security:
   basic:

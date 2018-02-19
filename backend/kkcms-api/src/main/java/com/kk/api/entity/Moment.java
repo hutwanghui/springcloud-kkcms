@@ -21,6 +21,9 @@ public class Moment extends BaseModel {
     @Column(name = "pictureList")
     private String picturelist;
 
+    @Transient
+    private User user;
+
     /**
      * 获取内容
      *
@@ -73,5 +76,35 @@ public class Moment extends BaseModel {
      */
     public void setPicturelist(String picturelist) {
         this.picturelist = picturelist;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Moment)) return false;
+
+        Moment moment = (Moment) o;
+
+        if (getContent() != null ? !getContent().equals(moment.getContent()) : moment.getContent() != null)
+            return false;
+        if (getPraiseuseridlist() != null ? !getPraiseuseridlist().equals(moment.getPraiseuseridlist()) : moment.getPraiseuseridlist() != null)
+            return false;
+        return getPicturelist() != null ? getPicturelist().equals(moment.getPicturelist()) : moment.getPicturelist() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getContent() != null ? getContent().hashCode() : 0;
+        result = 31 * result + (getPraiseuseridlist() != null ? getPraiseuseridlist().hashCode() : 0);
+        result = 31 * result + (getPicturelist() != null ? getPicturelist().hashCode() : 0);
+        return result;
     }
 }

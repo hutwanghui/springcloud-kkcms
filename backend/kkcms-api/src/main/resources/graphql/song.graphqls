@@ -3,15 +3,10 @@ schema {
     mutation: Mutation
 }
 scalar DateTime
-type MomentItem{
-    moment: Moment
-    user: User
-    userList: [User]
-    commentItemList: [CommentItem]
-}
 type CommentItem{
-    comment: Comment
+    content: String
     user: User
+    touser: User
 }
 
 type Song{
@@ -45,6 +40,12 @@ type User{
     id: ID!
     name: String
     head: String
+}
+type MomentItem{
+    moment: Moment
+    user: User
+    userList: [User]
+    commentItemList: [CommentItem]
 }
 input SongInput{
     id: ID!

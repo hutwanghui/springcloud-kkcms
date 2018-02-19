@@ -10,4 +10,5 @@ import java.util.List;
  */
 public interface ICommentService extends BaseService<Comment> {
     public List<Comment> selectByMomentId(int userId);
+    public List<Comment> getMomentItem();
 }
