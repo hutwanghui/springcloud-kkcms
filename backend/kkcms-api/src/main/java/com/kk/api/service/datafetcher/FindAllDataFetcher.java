@@ -36,6 +36,7 @@ public class FindAllDataFetcher<T> implements DataFetcher<List<T>> {
     @Override
     public List<T> get(DataFetchingEnvironment dataFetchingEnvironment) {
         String path = dataFetchingEnvironment.getFieldTypeInfo().getPath().toString();
+
         String chooseService = StringUtils.substringAfterLast(path, "findAll");
         if (chooseService.equals("Song")) {
             return (List<T>) songService.selectListAll();
