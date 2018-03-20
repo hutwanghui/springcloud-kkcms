@@ -36,9 +36,9 @@ public class FindAllDataFetcher<T> implements DataFetcher<List<T>> {
     @Override
     public List<T> get(DataFetchingEnvironment dataFetchingEnvironment) {
         String path = dataFetchingEnvironment.getFieldTypeInfo().getPath().toString();
-
         String chooseService = StringUtils.substringAfterLast(path, "findAll");
         if (chooseService.equals("Song")) {
+
             return (List<T>) songService.selectListAll();
         } else if (chooseService.equals("Comment")) {
             return (List<T>) commentService.selectListAll();
@@ -57,7 +57,7 @@ public class FindAllDataFetcher<T> implements DataFetcher<List<T>> {
                         momentItem.setCommentItemList(value);
                         List<User> pariseList = new ArrayList<>();
                         List<String> userIdList = Arrays.asList(key.getPraiseuseridlist().substring(1, key.getPraiseuseridlist().length() - 1).split(", "));
-                        userIdList.stream().forEach(userid -> pariseList.add(userService.findPraiseuserUserlist(Integer.valueOf(userid))));
+                        userIdList.parallelStream().forEach(userid -> pariseList.add(userService.findPraiseuserUserlist(Integer.valueOf(userid))));
                         momentItem.setUserList(pariseList);
                         momentItems.add(momentItem);
                     }

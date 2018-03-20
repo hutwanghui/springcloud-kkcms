@@ -2,6 +2,7 @@ package com.kk.api.config;
 
 
 import com.alibaba.druid.pool.DruidDataSource;
+import com.alibaba.druid.wall.WallFilter;
 import com.github.pagehelper.PageHelper;
 import org.apache.ibatis.logging.LogFactory;
 import org.apache.ibatis.plugin.Interceptor;
@@ -31,7 +32,7 @@ public class MybatisConfig {
     /**
      * 获取数据源
      */
-    @Bean
+  /*  @Bean
     public DataSource druidDataSource() {
         DruidDataSource druidDataSource = new DruidDataSource();
         druidDataSource.setUrl(environment.getProperty("spring.datasource.url"));
@@ -52,12 +53,13 @@ public class MybatisConfig {
         druidDataSource.setMaxOpenPreparedStatements(Integer.parseInt(environment.getProperty("spring.datasource.druid.max-pool-prepared-statement-per-connection-size")));
         try {
             druidDataSource.setFilters(environment.getProperty("spring.datasource.druid.filters"));
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return druidDataSource;
     }
-
+*/
     @Bean(name = "sqlSessionFactory")
     public SqlSessionFactory sqlSessionFactoryBean(DataSource druidDataSource) {
         SqlSessionFactoryBean bean = new SqlSessionFactoryBean();
@@ -102,5 +104,6 @@ public class MybatisConfig {
     public DataSourceTransactionManager transactionManager(DataSource druidDataSource) {
         return new DataSourceTransactionManager(druidDataSource);
     }
+
 
 }

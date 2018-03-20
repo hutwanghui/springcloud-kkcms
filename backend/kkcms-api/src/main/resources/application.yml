@@ -21,7 +21,7 @@ spring:
       password: wh970121
   datasource:
         name: kkcms
-        url: jdbc:mysql://127.0.0.1:3306/kkcms?useUnicode=true&characterEncoding=UTF8&useSSL=true
+        url: jdbc:mysql://127.0.0.1:3306/kkcms?useUnicode=true&characterEncoding=UTF8&useSSL=true&allowMultiQueries=true
         username: root
         password: wh970121
         driver-class-name: com.mysql.jdbc.Driver
@@ -39,19 +39,30 @@ spring:
           poolPreparedStatements: true
           max-pool-prepared-statement-per-connection-size: 100
           filters: stat,wall,slf4j
-          web-stat-filter.enabled: true
-          web-stat-filter.url-pattern: /*
-          web-stat-filter.session-stat-enable: true
-          web-stat-filter.session-stat-max-count: 1000
-          web-stat-filter.profile-enable: true
-          stat-view-servlet.enabled: true
-          stat-view-servlet.url-pattern: /druid/*
-          stat-view-servlet.reset-enable: true
-          stat-view-servlet.login-username: kkdruid
-          stat-view-servlet.login-password: wh970121
-          filter.stat.slow-sql-millis: 5000
-          filter.stat.log-slow-sql: true
+          web-stat-filter:
+            enabled: true
+            url-pattern: /*
+            session-stat-enable: true
+            session-stat-max-count: 1000
+            profile-enable: true
+          stat-view-servlet:
+            enabled: true
+            url-pattern: /druid/*
+            reset-enable: true
+            login-username: kkdruid
+            login-password: wh970121
           aop-patterns: com.kk.api.service.*,com.kk.api.dao.*
+          filter:
+            wall:
+              config:
+                multi-statement-allow: true
+              enabled: true
+              db-type: mysql
+            stat:
+              slow-sql-millis: 5000
+              log-slow-sql: true
+              db-type: mysql
+
 
 
 eureka:

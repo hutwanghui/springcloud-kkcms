@@ -42,6 +42,10 @@ zuul:
       path: /kkcms-gate/**
       url: http://localhost:8965/
       serviceId: kkcms-gate
+    kkcms-app:
+      path: /kkcms-app/**
+      url: http://localhost:8963/
+      serviceId: kkcms-app
   sensitive-headers:
   add-proxy-headers: true
 

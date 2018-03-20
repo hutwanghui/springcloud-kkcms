@@ -9,7 +9,62 @@
         <result column="name" property="name" jdbcType="VARCHAR"/>
         <result column="author" property="author" jdbcType="VARCHAR"/>
     </resultMap>
+    <sql id="all_sql">
+        id,
+        name,
+        author
+    </sql>
     <select id="count" resultType="long">
-        SELECT count(*) FROM song
+        SELECT count(*) FROM song (
+        <include refid="all_sql"/>
+        )VALUES
+        <foreach collection="list" item="item" separator=",">
+            (
+            <if test="item.name!=null">
+                #{item.name},
+            </if>
+            <if test="item.auth!=null">
+                #{item.author}
+            </if>
+            )
+        </foreach>
     </select>
+    <insert id="insertCTQ">
+        INSERT INTO song
+    </insert>
+    <delete id="deleteCTQ" parameterType="java.util.List">
+        DELETE FROM song WHERE id IN
+        <foreach collection="list" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+    <update id="updateCTQ" parameterType="java.util.List">
+        update song
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="name =case" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.name !=null">
+                        when id=#{item.id} then #{item.name}
+                    </if>
+                    <if test="item.name == null">
+                        when id=#{item.id} then mydata_table.status
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="author =case" suffix="end">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.author !=null">
+                        when id=#{item.id} then #{item.author}
+                    </if>
+                    <if test="item.author == null">
+                        when id=#{item.id} then mydata_table.status
+                    </if>
+                </foreach>
+            </trim>
+        </trim>
+        where id in
+        <foreach collection="list" index="index" item="item" separator="," open="(" close=")">
+            #{item.id,jdbcType=BIGINT}
+        </foreach>
+    </update>
 </mapper>

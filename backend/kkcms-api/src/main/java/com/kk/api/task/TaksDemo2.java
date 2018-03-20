@@ -1,7 +1,13 @@
 package com.kk.api.task;
 
 import com.kk.api.entity.Comment;
+import com.kk.api.entity.Moment;
+import com.kk.api.entity.Song;
+import com.kk.api.entity.User;
 import com.kk.api.service.ICommentService;
+import com.kk.api.service.IMomentService;
+import com.kk.api.service.ISongService;
+import com.kk.api.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
@@ -10,6 +16,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Future;
 
 /**
  * Created by msi- on 2018/2/16.
@@ -18,6 +25,15 @@ import java.util.concurrent.CompletableFuture;
 public class TaksDemo2 {
     @Autowired
     private ICommentService commentService;
+
+    @Autowired
+    private IMomentService momentService;
+
+    @Autowired
+    private IUserService userService;
+
+    @Autowired
+    private ISongService songService;
 
     /**
      * 创建CompletableFuture对象。
@@ -40,15 +56,68 @@ public class TaksDemo2 {
      */
 
     @Async
-    public CompletableFuture<List<Comment>> taskOne() throws Exception {
+    public CompletableFuture<List<Comment>> dotaskOne() throws Exception {
+        System.out.println("开始做任务一");
+        long start = System.currentTimeMillis();
+       /* Thread.sleep(Random.class.newInstance().nextInt(10000));*/
         CompletableFuture<List<Comment>> future = CompletableFuture.supplyAsync(() -> {
             return commentService.selectListAll();
         });
-        System.out.println("开始做任务一");
-        long start = System.currentTimeMillis();
-        Thread.sleep(Random.class.newInstance().nextInt(10000));
         long end = System.currentTimeMillis();
         System.out.println("完成任务一，耗时：" + (end - start) + "毫秒");
         return future;
+    }
+
+    @Async
+    public CompletableFuture<List<Comment>> doTaskTwo() throws Exception {
+        System.out.println("开始做任务二");
+        long start = System.currentTimeMillis();
+        CompletableFuture<List<Comment>> future = CompletableFuture.supplyAsync(() -> {
+            return commentService.getMomentItem();
+        });
+        long end = System.currentTimeMillis();
+        System.out.println("完成任务二，耗时：" + (end - start) + "毫秒");
+        return future;
+    }
+
+
+    @Async
+    public CompletableFuture<List<User>> doTaskThree() throws Exception {
+
+        System.out.println("开始做任务三");
+        long start = System.currentTimeMillis();
+        CompletableFuture<List<User>> future = CompletableFuture.supplyAsync(() -> {
+            return userService.selectListAll();
+        });
+        long end = System.currentTimeMillis();
+        System.out.println("完成任务三，耗时：" + (end - start) + "毫秒");
+        return future;
+    }
+
+    @Async
+    public CompletableFuture<List<Song>> doTaskFour() {
+        System.out.println("开始做任务四");
+        long start = System.currentTimeMillis();
+        CompletableFuture<List<Song>> future = CompletableFuture.supplyAsync(() -> {
+            return songService.selectListAll();
+        });
+        long end = System.currentTimeMillis();
+        System.out.println("完成任务四，耗时：" + (end - start) + "毫秒");
+        return future;
+    }
+
+    @Async
+    public CompletableFuture<String> doTaskFive_combine() {
+        System.out.println("开始做任务四");
+        long start = System.currentTimeMillis();
+        CompletableFuture<String> future = CompletableFuture.supplyAsync(() -> {
+            return "hello";
+        }).thenCombine(CompletableFuture.supplyAsync(() -> {
+            return "world";
+        }), (s1, s2) -> s1 + "::" + s2);
+        long end = System.currentTimeMillis();
+        System.out.println("完成任务四，耗时：" + (end - start) + "毫秒");
+        return future;
+
     }
 }

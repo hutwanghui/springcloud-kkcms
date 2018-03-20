@@ -30,7 +30,6 @@ public class UpdateObjectDataFetcher<T> implements DataFetcher<T> {
         String path = environment.getFieldTypeInfo().getPath().toString();
         String chooseService = StringUtils.substringAfterLast(path, "update");
         if (chooseService.equals("Comment")) {
-            //System.out.print("^^^^^^^^^^^^&&&&&&&&&&&&&^^^^^^^^^^^" + environment.getArgument("comment"));
             commentService.updateById(environment.getArgument("comment"));
         } else if (chooseService.equals("Moment")) {
 

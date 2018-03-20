@@ -80,4 +80,18 @@ public class Song {
         result = 31 * result + (getAuthor() != null ? getAuthor().hashCode() : 0);
         return result;
     }
+
+    public Song(Integer id, String name, String author) {
+        this.id = id;
+        this.name = name;
+        this.author = author;
+    }
+
+    public Song(String name, String author) {
+        this.name = name;
+        this.author = author;
+    }
+
+    public Song() {
+    }
 }

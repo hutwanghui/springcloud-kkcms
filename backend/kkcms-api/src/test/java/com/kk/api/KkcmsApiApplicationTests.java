@@ -6,6 +6,7 @@ import com.kk.api.service.IMomentService;
 import com.kk.api.service.ISongService;
 import com.kk.api.service.IUserService;
 import com.kk.api.task.TaksDemo;
+import com.kk.api.task.TaksDemo2;
 import com.kk.common.util.ObjectUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,6 +16,8 @@ import org.springframework.security.access.method.P;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -38,6 +41,8 @@ public class KkcmsApiApplicationTests {
     private IUserService userService;
     @Autowired
     private TaksDemo taskDemo;
+    @Autowired
+    private TaksDemo2 taksDemo2;
 
     @Test
     public void contextLoads() {
@@ -47,6 +52,52 @@ public class KkcmsApiApplicationTests {
     public void testSelectOne() {
         Song song = songService.selectById(1);
         System.out.print("******" + song.toString());
+    }
+
+    @Test
+    public void deleteCTQTest() {
+        List<String> iditems = Arrays.asList("999", "998", "997");
+        songService.deleteCTQ(iditems);
+    }
+
+    /**
+     * 完成任务，耗时：1134毫秒
+     * 批量跟心数据库的方式可以在一次数据库连接中更新所有数据，避免了频繁数据库建立和断开连接的开销
+     * 但是一旦出错，所有的更新将自动回滚。而且通常这种方式也更容易出错。
+     */
+    @Test
+    public void updateCTQTest() {
+        List<Song> list = new ArrayList<>();
+        Song song = new Song(1000, "二框", "歌手二框");
+        Song song1 = new Song(1001, "二框", "歌手二框");
+        Song song2 = new Song(1002, "二框", "歌手二框");
+        list.add(song);
+        list.add(song1);
+        list.add(song2);
+        System.out.println("开始做任务");
+        long start = System.currentTimeMillis();
+        songService.updateCTQ(list);
+        long end = System.currentTimeMillis();
+        System.out.println("完成任务，耗时：" + (end - start) + "毫秒");
+
+    }
+
+    @Test
+    public void updateListTest(){
+        List<Song> list = new ArrayList<>();
+        Song song = new Song(1000, "二框", "歌手二框");
+        Song song1 = new Song(1001, "二框", "歌手二框");
+        Song song2 = new Song(1002, "二框", "歌手二框");
+        list.add(song);
+        list.add(song1);
+        list.add(song2);
+        System.out.println("开始做任务");
+        long start = System.currentTimeMillis();
+        songService.updateById(song);
+        songService.updateById(song1);
+        songService.updateById(song2);
+        long end = System.currentTimeMillis();
+        System.out.println("完成任务，耗时：" + (end - start) + "毫秒");
     }
 
     @Test
@@ -68,12 +119,81 @@ public class KkcmsApiApplicationTests {
                 // 三个任务都调用完成，退出循环等待
                 break;
             }
-            Thread.sleep(1000);
+            // Thread.sleep(1000);
         }
 
         long end = System.currentTimeMillis();
 
         System.out.println("任务全部完成，总耗时：" + (end - start) + "毫秒");
+
+    }
+
+    /**
+     * 实测
+     * 完成任务一、二、三，耗时：948毫秒
+     * 当数据超过1000
+     * 完成任务一、二、三，耗时：1052毫秒
+     * 当数据超过10000
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testSync() throws Exception {
+        System.out.println("开始做任务一、二、三的同步");
+        long start = System.currentTimeMillis();
+        List<Comment> commentList = commentService.selectListAll();
+        List<Comment> momentList = commentService.getMomentItem();
+        List<User> userList = userService.selectListAll();
+        //List<Song> songList = songService.selectListAll();
+        long end = System.currentTimeMillis();
+        System.out.println("完成任务一、二、三，耗时：" + (end - start) + "毫秒");
+    }
+
+    /**
+     * 完成任务一，耗时：2毫秒
+     * 完成任务二，耗时：2毫秒
+     * 完成任务三，耗时：2毫秒
+     * 实测16毫秒
+     * <p>
+     * 当查询数据超过1000
+     * 完成任务三，耗时：3毫秒
+     * 完成任务一，耗时：4毫秒
+     * 完成任务四，耗时：3毫秒
+     * 完成任务二，耗时：4毫秒
+     * 任务全部完成，总耗时：20毫秒
+     * 当查询数据超过10000
+     * 完成任务四，耗时：7毫秒
+     * 完成任务二，耗时：7毫秒
+     * 完成任务三，耗时：8毫秒
+     * 完成任务一，耗时：8毫秒
+     * 任务全部完成，总耗时：10毫秒
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testAsync2() throws Exception {
+        long start = System.currentTimeMillis();
+        CompletableFuture<List<Comment>> task1 = taksDemo2.dotaskOne();
+        CompletableFuture<List<Comment>> task2 = taksDemo2.doTaskTwo();
+        CompletableFuture<List<User>> task3 = taksDemo2.doTaskThree();
+        CompletableFuture<List<Song>> task4 = taksDemo2.doTaskFour();
+        long end = System.currentTimeMillis();
+        System.out.println(task1.get() + "::" + task2.get() + "::" + task3.get());
+        System.out.println("任务全部完成，总耗时：" + (end - start) + "毫秒");
+    }
+
+    @Test
+    public void testComplableFutureApi() throws ExecutionException, InterruptedException {
+        CompletableFuture<String> taskFive = taksDemo2.doTaskFive_combine();
+        System.out.println(taskFive.get());
+    }
+
+    @Test
+    public void insertSong() {
+        for (int i = 0; i < 10000; i++) {
+            Song song = new Song("歌手框框", "框框王");
+            songService.insert(song);
+        }
 
     }
 
@@ -228,9 +348,9 @@ public class KkcmsApiApplicationTests {
                     List<User> pariseList = new ArrayList<>();
 
                     List<String> features_lamda = Arrays.asList(key.getPraiseuseridlist().substring(1, key.getPraiseuseridlist().length() - 1).split(", "));
-                    features_lamda.stream().forEach(userid->pariseList.add(userService.selectById(Integer.valueOf(userid))));
+                    features_lamda.stream().forEach(userid -> pariseList.add(userService.selectById(Integer.valueOf(userid))));
                     System.out.println(pariseList.toString());
-        }
+                }
         );
         System.out.println("========" + map.size());
 
