@@ -63,6 +63,4 @@ public class ValidateController {
         System.out.print("移动端" + "接收前端获取验证码类型：" + type);
         validateOauthCodeProcessorHolder.findOauthValidateCodeProcessor(type).create(new ServletWebRequest(request, response));
     }
-
-
 }

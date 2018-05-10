@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.Map;
 
 import com.kk.common.util.ObjectUtil;
+import com.kk.common.util.http.HttpInformationHelper;
 import com.kk.gate.exception.ValidateCodeException;
 import com.kk.gate.validate.ValidateCodeGenerator;
 import com.kk.gate.validate.ValidateCodeProcessor;
@@ -37,7 +38,12 @@ public abstract class AbstractValidateCodeProcessor<C extends ValidateCode> impl
     /**
      * 操作session的工具类
      */
-    private SessionStrategy sessionStrategy = new HttpSessionSessionStrategy();
+//    private SessionStrategy sessionStrategy = new HttpSessionSessionStrategy();
+
+
+    @Autowired
+    private ValidateCodeRepository validateCodeRepository;
+
     /**
      * 收集系统中所有的 {@link ValidateCodeGenerator} 接口的实现。
      */
@@ -78,9 +84,9 @@ public abstract class AbstractValidateCodeProcessor<C extends ValidateCode> impl
     private void save(ServletWebRequest request, C validateCode) {
         if (validateCode instanceof ImageCode) {
             ValidateCode validateCode_temp = ObjectUtil.copyProperties(validateCode, ValidateCode.class);
-            sessionStrategy.setAttribute(request, getSessionKey(request), validateCode_temp);
+            validateCodeRepository.save(request, validateCode_temp, getValidateCodeType(request));
         } else {
-            sessionStrategy.setAttribute(request, getSessionKey(request), validateCode);
+            validateCodeRepository.save(request, validateCode, getValidateCodeType(request));
         }
 
     }
@@ -121,14 +127,15 @@ public abstract class AbstractValidateCodeProcessor<C extends ValidateCode> impl
     public void validate(ServletWebRequest request) {
 
         ValidateCodeType processorType = getValidateCodeType(request);
-        String sessionKey = getSessionKey(request);
-        C codeInSession = (C) sessionStrategy.getAttribute(request, sessionKey);
+        //String sessionKey = getSessionKey(request);
+//         C codeInSession = (C) sessionStrategy.getAttribute(request, sessionKey);
+        C codeInRedis = (C) validateCodeRepository.get(request, processorType);
         System.out.print("我来拦截111111111");
         String codeInRequest;
         try {
-            codeInRequest = ServletRequestUtils.getStringParameter(request.getRequest(),
-                    processorType.getParamNameOnValidate());
-        } catch (ServletRequestBindingException e) {
+            codeInRequest = request.getRequest().getParameter("imageCode");
+            logger.info("*********" + codeInRequest);
+        } catch (Exception e) {
             logger.info("获取验证码的值失败");
             throw new ValidateCodeException("104");
         }
@@ -138,22 +145,22 @@ public abstract class AbstractValidateCodeProcessor<C extends ValidateCode> impl
             throw new ValidateCodeException("105");
         }
 
-        if (codeInSession == null) {
+        if (codeInRedis == null) {
             logger.info("验证码不存在");
             throw new ValidateCodeException("106");
         }
 
-        if (codeInSession.isExpried()) {
-            sessionStrategy.removeAttribute(request, sessionKey);
+        if (codeInRedis.isExpried()) {
+            validateCodeRepository.remove(request, processorType);
             logger.info("验证码过期");
             throw new ValidateCodeException("107");
         }
 
-        if (!StringUtils.equals(codeInSession.getCode().toUpperCase(), codeInRequest.toUpperCase())) {
+        if (!StringUtils.equals(codeInRedis.getCode().toUpperCase(), codeInRequest.toUpperCase())) {
             logger.info("验证码不匹配");
             throw new ValidateCodeException("108");
         }
-        sessionStrategy.removeAttribute(request, sessionKey);
+        validateCodeRepository.remove(request, processorType);
     }
 
 }

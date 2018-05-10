@@ -32,6 +32,6 @@
         <!--<table tableName="sys_role_user" domainObjectName="SysRoleUser"/>-->
         <!--		<table tableName="sys_authoriry" domainObjectName="SysAuthority"/>
                 <table tableName="sys_element" domainObjectName="SysElement"/>-->
-        <table tableName="sys_userconnection" domainObjectName="SysConnection"/>
+        <table tableName="htds_rk" domainObjectName="Htdsrk"/>
     </context>
 </generatorConfiguration>

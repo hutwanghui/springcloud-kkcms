@@ -1,30 +1,22 @@
 package com.kk.gate.config.cloud.oauth;
 
-import com.kk.gate.config.SmsCodeAuthenticationSecurityConfig;
 import com.kk.gate.config.cloud.oauth.authentication.SmsCodeOauthAuthenticationSecurityConfig;
+import com.kk.common.security.AuthorizeConfigManager;
 import com.kk.gate.config.properties.SecurityProperties;
-import com.kk.gate.config.properties.ValidateProperties;
-import com.kk.gate.handler.CustomAuthenticationFailureHandler;
-import com.kk.gate.handler.CustomAuthenticationSuccessHandler;
 import com.kk.gate.handler.CustomLogoutSuccessHandler;
 import com.kk.gate.handler.Oauth.CustomOauthAuthenticationFailureHandler;
 import com.kk.gate.handler.Oauth.CustomOauthAuthenticationSuccessHandler;
-import com.kk.gate.service.impl.UserDetailsServiceImpl;
 import com.kk.gate.session.KkcmsExpiredSessionStrategy;
 import com.kk.gate.session.KkcmsInvalidSessionStaregy;
 import com.kk.gate.validate.SecurityConstants;
 import com.kk.gate.validate.UnifyValiteCoderFilter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
-import org.springframework.security.oauth2.provider.ClientDetailsService;
-import org.springframework.security.oauth2.provider.client.InMemoryClientDetailsService;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
@@ -53,6 +45,8 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     private TokenStore jwtTokenStore;
     @Autowired(required = false)
     private JwtAccessTokenConverter jwtAccessTokenConverter;
+    @Autowired
+    private AuthorizeConfigManager authorizeConfigManager;
 
     @Override
     public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
@@ -75,15 +69,19 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 .successHandler(customOauthAuthenticationSuccessHandler)
                 .failureHandler(customOauthAuthenticationFailureHandler)
                 .and()
-                .authorizeRequests()
-                .antMatchers("/", "/kkcms-user/user/register","/hystrix.stream","/swagger-ui.html", SecurityConstants.DEFAULT_OAUTH2_UNAUTHENTICATION_URL, SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_MOBILE, securityProperties.getBrowser().getLoginPage(), "/oauthcode/*", "/code/*", securityProperties.getBrowser().getSessionInvalidPage()).permitAll()
-                .antMatchers("/hystrix/**").hasRole("ADMIN")
-                .antMatchers("/**/session/**").authenticated()
-                .anyRequest()/*.access("@permissionService.hasPermission(request,authentication)")*/.authenticated()
-                .and()
-                .logout().logoutSuccessHandler(logoutSuccessHandler()).permitAll();
+//                .authorizeRequests()
+//                .antMatchers("/", "/kkcms-user/user/register", "/hystrix.stream", "/swagger-ui.html", SecurityConstants.DEFAULT_OAUTH2_UNAUTHENTICATION_URL, SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_MOBILE, securityProperties.getBrowser().getLoginPage(), "/oauthcode/*", "/code/*", securityProperties.getBrowser().getSessionInvalidPage()).permitAll()
+//                .antMatchers("/hystrix/**").hasRole("ADMIN")
+//                .antMatchers("/**/session/**").authenticated()
+//                .anyRequest()/*.access("@permissionService.hasPermission(request,authentication)")*/.authenticated()
+//                .and()
+                .logout()
+                .logoutSuccessHandler(logoutSuccessHandler())
+                .deleteCookies("JSESSIONID")
+                .permitAll();
         http.csrf().disable();
         http.headers().frameOptions().disable();
+        authorizeConfigManager.config(http.authorizeRequests());
     }
 
 

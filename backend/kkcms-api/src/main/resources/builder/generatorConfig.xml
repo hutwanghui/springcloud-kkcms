@@ -34,6 +34,7 @@
                 <table tableName="sys_element" domainObjectName="SysElement"/>-->
 <!--        <table tableName="moment" domainObjectName="Moment"/>
         <table tableName="praise" domainObjectName="Parise"/>-->
-        <table tableName="user" domainObjectName="User"/>
+        <!--<table tableName="user" domainObjectName="User"/>-->
+        <table tableName="user_action" domainObjectName="UserAction"/>
     </context>
 </generatorConfiguration>

@@ -77,6 +77,14 @@ public class SessionAccessFilter extends ZuulFilter {
             passZullPorxy(ctx);
             return null;
         }
+        if (StringUtils.contains(request.getRequestURL().toString(), "kkcms-gate/code")) {
+            passZullPorxy(ctx);
+            return null;
+        }
+        if (StringUtils.contains(request.getRequestURL().toString(), "kkcms-houtai/hadoop/uploadShell")) {
+            passZullPorxy(ctx);
+            return null;
+        }
         if (HTTPRequestUtils.getInstance().getHeaderValue("Authorization") == null) {
             log.warn("access token is empty!!!");
             // 禁止对该请求进行路由

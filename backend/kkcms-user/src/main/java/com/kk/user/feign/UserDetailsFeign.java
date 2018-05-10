@@ -9,7 +9,6 @@ import com.kk.user.entity.KUser;
 import com.kk.user.entity.SysConnection;
 import com.kk.user.po.ElementVo;
 import com.kk.user.service.ISysConnectionService;
-import com.kk.user.service.ISysElementService;
 import com.kk.user.service.ISysRoleService;
 import com.kk.user.service.IUserService;
 import io.swagger.annotations.ApiOperation;
@@ -36,8 +35,6 @@ public class UserDetailsFeign {
     private IUserService userService;
     @Autowired
     private ISysRoleService sysRoleService;
-    @Autowired
-    private ISysElementService sysElementService;
     @Autowired
     private ISysConnectionService sysConnectionService;
 
@@ -81,7 +78,7 @@ public class UserDetailsFeign {
         return socialVo;
     }
 
-    @RequestMapping(value = "/permissions/roles/{roles}", method = RequestMethod.POST)
+    /*@RequestMapping(value = "/permissions/roles/{roles}", method = RequestMethod.POST)
     @ApiOperation(value = "授权：角色查找接口")
     public Set<PermissionInfo> findPermissionInfoByRoles(@PathVariable("roles") String roles) {
         Set<PermissionInfo> resultSet = new HashSet<>();
@@ -103,5 +100,5 @@ public class UserDetailsFeign {
             e.printStackTrace();
         }
         return resultSet;
-    }
+    }*/
 }

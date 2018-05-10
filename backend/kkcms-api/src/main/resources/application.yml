@@ -64,7 +64,6 @@ spring:
               db-type: mysql
 
 
-
 eureka:
     client:
         serviceUrl:

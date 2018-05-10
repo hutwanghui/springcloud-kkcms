@@ -8,7 +8,6 @@ type CommentItem{
     user: User
     touser: User
 }
-
 type Song{
     id: ID!
     name: String
@@ -47,6 +46,13 @@ type MomentItem{
     userList: [User]
     commentItemList: [CommentItem]
 }
+type Echarts{
+    value: Long
+    name: String
+}
+type Echarts_mouth{
+    mouth_result: [Long]
+}
 input SongInput{
     id: ID!
     name: String
@@ -75,6 +81,24 @@ type Query {
     findAllComment: [Comment]
     findAllMomentByUserId(userId: Long):[Moment]
     findAllMoment: [MomentItem]
+    findAllTop10: [Echarts]
+    findAllBehavior: [Echarts]
+    findAllBehaviorChina_1: [Echarts]
+    findAllBehaviorChina_2: [Echarts]
+    findAllBehaviorChina_3: [Echarts]
+    findAllBehaviorChina_4: [Echarts]
+    findOnePurchesMouth: Echarts_mouth
+    findOneBrowseMouth: Echarts_mouth
+    findOneAddcartMouth: Echarts_mouth
+    findOneCollectMouth: Echarts_mouth
+    findOneBehavior_1UpMouth: Echarts_mouth
+    findOneBehavior_1DownMouth: Echarts_mouth
+    findOneBehavior_2UpMouth: Echarts_mouth
+    findOneBehavior_2DownMouth: Echarts_mouth
+    findOneBehavior_3UpMouth: Echarts_mouth
+    findOneBehavior_3DownMouth: Echarts_mouth
+    findOneBehavior_4UpMouth: Echarts_mouth
+    findOneBehavior_4DownMouth: Echarts_mouth
 }
 type Mutation {
     newSong (song:SongInput): Song

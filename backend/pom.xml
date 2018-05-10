@@ -18,6 +18,8 @@
         <module>kkcms-app</module>
         <module>kkcms-zuul</module>
         <module>kkcms-wx</module>
+        <module>kkcms-houtai</module>
+        <module>kkcms-hadoop</module>
     </modules>
     <properties>
         <spring-boot-version>1.5.9.RELEASE</spring-boot-version>

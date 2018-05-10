@@ -1,9 +1,14 @@
 package com.kk.user;
 
+import com.kk.user.entity.Htdsrk;
+import com.kk.user.mapper.HtdsrkMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -12,5 +17,4 @@ public class KkcmsUserApplicationTests {
 	@Test
 	public void contextLoads() {
 	}
-
 }

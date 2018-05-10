@@ -33,7 +33,7 @@ public class GraphQLService {
      * 数据获取器
      */
     @Autowired
-    private FindOneDataFetcher findByIdDataFetcher;
+    private FindOneDataFetcher findOneDataFetcher;
     @Autowired
     private FindAllDataFetcher findAllDataFetcher;
     @Autowired
@@ -65,12 +65,30 @@ public class GraphQLService {
         //增加一些数据获取（dataFetch），目的是让graphql知道向哪张表获取什么数据
         return RuntimeWiring.newRuntimeWiring().type("Query", typeWiring ->
                 typeWiring
-                        .dataFetcher("findSongById", findByIdDataFetcher)
+                        .dataFetcher("findSongById", findOneDataFetcher)
                         .dataFetcher("findAllSong", findAllDataFetcher)
                         .dataFetcher("findAllCommentByUserId", findAllDataFetcher)
                         .dataFetcher("findAllComment", findAllDataFetcher)
                         .dataFetcher("findAllMomentByUserId", findAllDataFetcher)
                         .dataFetcher("findAllMoment", findAllDataFetcher)
+                        .dataFetcher("findAllTop10", findAllDataFetcher)
+                        .dataFetcher("findAllBehavior", findAllDataFetcher)
+                        .dataFetcher("findAllBehaviorChina_1", findAllDataFetcher)
+                        .dataFetcher("findAllBehaviorChina_2", findAllDataFetcher)
+                        .dataFetcher("findAllBehaviorChina_3", findAllDataFetcher)
+                        .dataFetcher("findAllBehaviorChina_4", findAllDataFetcher)
+                        .dataFetcher("findOnePurchesMouth", findOneDataFetcher)
+                        .dataFetcher("findOneBrowseMouth", findOneDataFetcher)
+                        .dataFetcher("findOneAddcartMouth", findOneDataFetcher)
+                        .dataFetcher("findOneCollectMouth", findOneDataFetcher)
+                        .dataFetcher("findOneBehavior_1UpMouth", findOneDataFetcher)
+                        .dataFetcher("findOneBehavior_1DownMouth", findOneDataFetcher)
+                        .dataFetcher("findOneBehavior_2UpMouth", findOneDataFetcher)
+                        .dataFetcher("findOneBehavior_2DownMouth", findOneDataFetcher)
+                        .dataFetcher("findOneBehavior_3UpMouth", findOneDataFetcher)
+                        .dataFetcher("findOneBehavior_3DownMouth", findOneDataFetcher)
+                        .dataFetcher("findOneBehavior_4UpMouth", findOneDataFetcher)
+                        .dataFetcher("findOneBehavior_4DownMouth", findOneDataFetcher)
         ).type("Mutation", typeWiring -> typeWiring
                 .dataFetcher("newComment", newObjectDataFetcher)
                 .dataFetcher("updateComment", updateObjectDataFetcher)

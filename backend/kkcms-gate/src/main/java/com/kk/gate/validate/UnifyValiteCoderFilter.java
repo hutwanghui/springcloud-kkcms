@@ -121,10 +121,12 @@ public class UnifyValiteCoderFilter extends OncePerRequestFilter implements Init
             try {
                 if (request.getHeader("devicedId") == null) {
                     //web端
+                    logger.info("进入web");
                     validateCodeProcessorHolder.findValidateCodeProcessor(type)
                             .validate(new ServletWebRequest(request, response));
                 } else {
                     //移动端
+                    logger.info("进入移动");
                     validateOauthCodeProcessorHolder.findOauthValidateCodeProcessor(type)
                             .validate(new ServletWebRequest(request, response));
                 }

@@ -33,6 +33,7 @@ public class CustomLogoutSuccessHandler implements LogoutSuccessHandler {
           try {
               //使当前session无效
               httpServletRequest.getSession().invalidate();
+
               httpServletResponse.setStatus(HttpServletResponse.SC_OK);
           } catch (Exception e) {
               e.printStackTrace();

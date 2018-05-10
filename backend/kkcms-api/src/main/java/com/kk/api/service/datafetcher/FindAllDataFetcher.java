@@ -1,10 +1,7 @@
 package com.kk.api.service.datafetcher;
 
 import com.kk.api.entity.*;
-import com.kk.api.service.ICommentService;
-import com.kk.api.service.IMomentService;
-import com.kk.api.service.ISongService;
-import com.kk.api.service.IUserService;
+import com.kk.api.service.*;
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
 import org.apache.commons.lang.StringUtils;
@@ -32,13 +29,14 @@ public class FindAllDataFetcher<T> implements DataFetcher<List<T>> {
     private IMomentService momentService;
     @Autowired
     private IUserService userService;
+    @Autowired
+    private IUserActionService userActionService;
 
     @Override
     public List<T> get(DataFetchingEnvironment dataFetchingEnvironment) {
         String path = dataFetchingEnvironment.getFieldTypeInfo().getPath().toString();
         String chooseService = StringUtils.substringAfterLast(path, "findAll");
         if (chooseService.equals("Song")) {
-
             return (List<T>) songService.selectListAll();
         } else if (chooseService.equals("Comment")) {
             return (List<T>) commentService.selectListAll();
@@ -67,6 +65,34 @@ public class FindAllDataFetcher<T> implements DataFetcher<List<T>> {
             Moment moment = new Moment();
             moment.setUserId(dataFetchingEnvironment.getArgument("userId"));
             return (List<T>) momentService.selectList(moment);
+        } else if (chooseService.equals("Top10")) {
+            return (List<T>) userActionService.selectTop10();
+        } else if (chooseService.equals("Behavior")) {
+            return (List<T>) userActionService.selectBehavior();
+        } else if (chooseService.equals("BehaviorChina_1")) {
+            return (List<T>) userActionService.selectBehaviorChina("1");
+        } else if (chooseService.equals("BehaviorChina_2")) {
+            return (List<T>) userActionService.selectBehaviorChina("2");
+        } else if (chooseService.equals("BehaviorChina_3")) {
+            return (List<T>) userActionService.selectBehaviorChina("3");
+        } else if (chooseService.equals("BehaviorChina_4")) {
+            return (List<T>) userActionService.selectBehaviorChina("4");
+        } else if (chooseService.equals("Behavior_1UpMouth")) {
+            return (List<T>) userActionService.selectBehaviorUpMouth("1");
+        } else if (chooseService.equals("Behavior_2UpMouth")) {
+            return (List<T>) userActionService.selectBehaviorUpMouth("2");
+        } else if (chooseService.equals("Behavior_3UpMouth")) {
+            return (List<T>) userActionService.selectBehaviorUpMouth("3");
+        } else if (chooseService.equals("Behavior_4UpMouth")) {
+            return (List<T>) userActionService.selectBehaviorUpMouth("4");
+        } else if (chooseService.equals("Behavior_1DownMouth")) {
+            return (List<T>) userActionService.selectBehaviorDownMouth("1");
+        } else if (chooseService.equals("Behavior_2DownMouth")) {
+            return (List<T>) userActionService.selectBehaviorDownMouth("2");
+        } else if (chooseService.equals("Behavior_3DownMouth")) {
+            return (List<T>) userActionService.selectBehaviorDownMouth("3");
+        } else if (chooseService.equals("Behavior_4DownMouth")) {
+            return (List<T>) userActionService.selectBehaviorDownMouth("4");
         } else {
             return null;
         }

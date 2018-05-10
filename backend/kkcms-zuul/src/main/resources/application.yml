@@ -46,6 +46,14 @@ zuul:
       path: /kkcms-app/**
       url: http://localhost:8963/
       serviceId: kkcms-app
+    kkcms-houtai:
+      path: /kkcms-houtai/**
+      url: http://localhost:8967/
+      serviceId: kkcms-houtai
+    kkcms-wx:
+      path: /kkcms-wx/**
+      url: http://localhost:8966/
+      serviceId: kkcms-wx
   sensitive-headers:
   add-proxy-headers: true
 

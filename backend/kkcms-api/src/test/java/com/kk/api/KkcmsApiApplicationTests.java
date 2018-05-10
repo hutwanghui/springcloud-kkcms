@@ -1,13 +1,14 @@
 package com.kk.api;
 
 import com.kk.api.entity.*;
+import com.kk.api.entity.useraction.echarts;
+import com.kk.api.mapper.UserActionMapper;
 import com.kk.api.service.ICommentService;
 import com.kk.api.service.IMomentService;
 import com.kk.api.service.ISongService;
 import com.kk.api.service.IUserService;
 import com.kk.api.task.TaksDemo;
 import com.kk.api.task.TaksDemo2;
-import com.kk.common.util.ObjectUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +20,8 @@ import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
-import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -83,7 +82,7 @@ public class KkcmsApiApplicationTests {
     }
 
     @Test
-    public void updateListTest(){
+    public void updateListTest() {
         List<Song> list = new ArrayList<>();
         Song song = new Song(1000, "二框", "歌手二框");
         Song song1 = new Song(1001, "二框", "歌手二框");
@@ -358,5 +357,35 @@ public class KkcmsApiApplicationTests {
         System.out.println(map.toString());
     }
 
+    @Autowired
+    private UserActionMapper actionMapper;
 
+    @Test
+    public void selectTop10Test() {
+        List<echarts> echarts = actionMapper.selectTop10();
+        System.out.println("top结果" + echarts.toString());
+    }
+
+    @Test
+    public void selectPurchseMouth() {
+        List<Integer> echarts = actionMapper.selectPurchasMouth();
+        System.out.println(echarts.toString());
+    }
+
+    @Test
+    public void selectBehaviorTest() {
+        List<echarts> echart = actionMapper.selectBehavior();
+        echart.stream().forEach(ec -> {
+            if (ec.getName().equals("1")) {
+                ec.setName("浏览");
+            } else if (ec.getName().equals("2")) {
+                ec.setName("收藏");
+            } else if (ec.getName().equals("3")) {
+                ec.setName("添加购物车");
+            } else {
+                ec.setName("购买");
+            }
+        });
+        System.out.println(echart.toString());
+    }
 }

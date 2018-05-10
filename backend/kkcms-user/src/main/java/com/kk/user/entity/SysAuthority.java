@@ -8,7 +8,7 @@ public class SysAuthority {
     @Id
     private Integer id;
 
-    @Column(name = "role_id")
+    @Column(name = "id")
     private Integer roleId;
 
     @Column(name = "resource_id")

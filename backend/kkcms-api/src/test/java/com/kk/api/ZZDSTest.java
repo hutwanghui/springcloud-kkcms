@@ -1,33 +1,31 @@
-package com.kk.api.controller;
+package com.kk.api;
+
+/**
+ * Created by msi- on 2018/2/25.
+ */
 
 import com.kk.api.entity.TabErrorInfo;
 import com.kk.common.util.ExcelUtil;
 import com.kk.common.util.FileUtility;
 import org.apache.commons.beanutils.PropertyUtilsBean;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.apache.commons.lang3.StringUtils;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.imageio.ImageIO;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.beans.PropertyDescriptor;
 import java.io.*;
 import java.util.*;
 
-/**
- * Created by msi- on 2018/2/25.
- */
-@RestController
-@RequestMapping("/test")
-public class testController {
-    @RequestMapping("ErrorInfo")
-    public void exportExcel(HttpServletRequest request, HttpServletResponse response) throws IOException {
+@RunWith(SpringRunner.class)
+@SpringBootTest
+public class ZZDSTest {
+    @Test
+    public void ExcelTEST() throws IOException {
         String baseUrl = "F:\\IDEAworkspace\\kkcms\\backend\\kkcms-api\\src\\main\\resources\\excelTemplate";
         File tpl = new File(baseUrl + "\\NsrErrorInfoList.xls");
-        File dest = FileUtility.getUniqueFile(baseUrl, "xls");
-
-
+        File dest = FileUtility.getUniqueFile(baseUrl, ".xls");
         //EXCEL 填充值
         Map<String, Object> tMap = new HashMap<String, Object>();
         List<TabErrorInfo> t_list = new ArrayList<>();
@@ -39,18 +37,17 @@ public class testController {
         List<Map<String, Object>> maplist = ListbeanToMap(t_list);
         tMap.put("s1", maplist);
         ExcelUtil.excelGenerationByTemplate(tpl, dest, tMap);
-        String name = new String("纳税人登记信息.xls".getBytes("UTF-8"), "iso-8859-1");
+
+        /*String name = new String("纳税人数据质量信息错误表.xls".getBytes("UTF-8"), "iso-8859-1");
         FileInputStream fin = new FileInputStream(dest);
-        OutputStream output = response.getOutputStream();
-        byte[] buf = new byte[1024];
+        //FileOutputStream output = new FilterOutputStream(name);
+       *//* byte[] buf = new byte[1024];
         int r = 0;
-        response.setContentType("application/vnd.ms-excel;charset=UTF-8 ");
-        response.setHeader("Content-Disposition", "attachment;filename=" + name);
         while ((r = fin.read(buf, 0, buf.length)) != -1) {
             output.write(buf, 0, r);
-        }
+        }*//*
         fin.close();
-        output.close();
+        //output.close();*/
     }
 
     public static Map<String, Object> beanToMap(Object obj) {
@@ -79,4 +76,18 @@ public class testController {
         }
         return list;
     }
+
+
+    @Test
+    public void testMsg() {
+        String context = "XXXXXXXXX@株洲睿智科技";
+        if (StringUtils.contains(context, "@")) {
+            String[] strings = StringUtils.split(context, "@");
+            for(String str:strings){
+                System.out.println("\n结果："+str);
+            }
+            System.out.println("分离结果为：" + strings.length + "1:" );
+        }
+    }
+
 }
