@@ -15,7 +15,7 @@
         <module>kkcms-gate</module>
         <module>kkcms-im</module>
         <module>kkcms-api</module>
-        <module>kkcms-app</module>
+       <!-- <module>kkcms-app</module>-->
         <module>kkcms-zuul</module>
         <module>kkcms-wx</module>
         <module>kkcms-houtai</module>

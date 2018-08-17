@@ -7,5 +7,5 @@ import org.springframework.security.config.annotation.web.configurers.Expression
  * Created by msi- on 2018/4/5.
  */
 public interface AuthorizeConfigProvider {
-    void config(ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry config);
+    public void config(ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry config);
 }

@@ -32,26 +32,32 @@ zuul:
   routes:
     kkcms-user:
       path: /kkcms-user/**
+#      url: http://www.hutwanghui.club:8964/
       url: http://localhost:8964/
       serviceId: kkcms-user
     kkcms-api:
       path: /kkcms-api/**
+#      url: http://www.hutwanghui.club:8962/
       url: http://localhost:8962/
       serviceId: kkcms-api
     kkcms-gate:
       path: /kkcms-gate/**
+#      url: http://www.hutwanghui.club:8965/
       url: http://localhost:8965/
       serviceId: kkcms-gate
     kkcms-app:
       path: /kkcms-app/**
+#      url: http://www.hutwanghui.club:8963/
       url: http://localhost:8963/
       serviceId: kkcms-app
     kkcms-houtai:
       path: /kkcms-houtai/**
+#      url: http://www.hutwanghui.club:8967/
       url: http://localhost:8967/
       serviceId: kkcms-houtai
     kkcms-wx:
       path: /kkcms-wx/**
+#      url: http://www.hutwanghui.club:8966/
       url: http://localhost:8966/
       serviceId: kkcms-wx
   sensitive-headers:
@@ -77,7 +83,7 @@ security:
 #      prefer-token-info: false
 #    token:
 #      store:
-#        type: redis
+#        type: jwt
 
 turbine:
   aggregator:

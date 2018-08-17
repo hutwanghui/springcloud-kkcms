@@ -10,14 +10,15 @@ import graphql.schema.idl.RuntimeWiring;
 import graphql.schema.idl.SchemaGenerator;
 import graphql.schema.idl.SchemaParser;
 import graphql.schema.idl.TypeDefinitionRegistry;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.net.URL;
 
 /**
  * Created by msi- on 2018/2/8.
@@ -25,7 +26,7 @@ import java.io.IOException;
 @Service
 public class GraphQLService {
 
-    @Value("classpath:graphql/song.graphqls")
+    @Value("classpath:/graphql/song.graphqls")
     private Resource resource;
 
     private GraphQL graphQL;
@@ -51,9 +52,11 @@ public class GraphQLService {
     @PostConstruct
     public void loadShema() throws IOException {
         //use the file to parse
-        File schemaFile = resource.getFile();
+        //File schemaFile = resource.getFile();
+        InputStream is=this.getClass().getResourceAsStream("/graphql/song.graphqls");
+        BufferedReader br=new BufferedReader(new InputStreamReader(is));
         // parse 解析schema，通过特定文件，由graphQL进行type definitiion的注册
-        TypeDefinitionRegistry typeRegistry = new SchemaParser().parse(schemaFile);
+        TypeDefinitionRegistry typeRegistry = new SchemaParser().parse(br);
         //包装schemas，用以映射需要什么和在运行时会发生什么
         RuntimeWiring wiring = buildRuntimeWiring();
         GraphQLSchema schema = new SchemaGenerator().makeExecutableSchema(typeRegistry, wiring);
