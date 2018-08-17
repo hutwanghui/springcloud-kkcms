@@ -1,0 +1,85 @@
+
+spring:
+  kafka:
+    #指定kafka 代理地址，可以多个
+    bootstrap-servers: 172.16.0.15:9092
+    #bootstrap-servers: 118.89.18.32:9092
+    template:
+      default-topic: first
+    producer:
+      bootstrap-servers: 172.16.0.15:9092
+      #bootstrap-servers: 118.89.18.32:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      # 每次批量发送消息的数量
+      batch-size: 16384
+      # 缓存大小
+      buffer-memory: 33554432
+    consumer:
+      group-id: test-consumer-group
+      auto-offset-reset: earliest
+      enable-auto-commit: true
+      auto-commit-interval: 100
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+  thymeleaf:
+    mode: LEGACYHTML5
+    encoding: UTF-8
+    cache: false
+    servlet:
+      content-type: text/html
+    prefix: classpath:/templates/
+  datasource:
+#    url: jdbc:h2:file:D:/H2/cf_spark/cf_spark_database;AUTO_SERVER=TRUE
+    url: jdbc:h2:~/db/cf_spark/cf_spark_database;AUTO_SERVER=TRUE
+    driver-class-name: org.h2.Driver
+    username: admin
+    password: admin
+  h2:
+    console: true
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      format-sql: true
+      ddl-auto: update
+    show-sql: true
+
+  jackson:
+    serialization:
+      indent-output: true
+
+  cloud:
+      instance-count: 1
+      instance-index: 0
+      stream:
+        kafka:
+          binder:
+           # configuration:
+              #security:
+               # protocol: SASL_PLAINTEXT
+            #  sasl:
+             #   mechanism: PLAIN
+            brokers: master:9092
+            zk-nodes: master:2181
+            auto-add-partitions: true
+            auto-create-topics: true
+            min-partition-count: 1
+          bindings:
+          #          #配置自己定义的通道与哪个中间件交互
+          #          movie_input: #ShopChannel里Input和Output的值
+          #            destination: first #目标主题
+          #          movie_output:
+          #            destination: first
+           output:
+            destination: first
+            content-type: application/json
+           input:
+            consumer:
+              autoCommitOffset: false
+              oncurrency: 1
+              partitioned: false
+            destination: first
+            content-type: application/json
+            default-binder: kafka #默认的binder是kafka
+

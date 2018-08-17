@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<!--suppress ThymeleafVariablesResolveInspection-->
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/layui/css/layui.css">
+    <!--jquery-->
+    <script src="/jquery/jquery-3.3.1.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+    <!--layui-->
+    <script src="/layui/layui.js"/>
+    <!--bootstrap-->
+    <script src="/bootstrap/js/bootstrap.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.js"></script>
+    <!--echarts-->
+    <script src="/echarts/echarts.common.min.js"></script>
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.css">
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.css" rel="stylesheet">
+    <title>MovieSug-个人中心</title>
+    <style>
+        .topbar-per dd a{
+            font-size: 17px;
+            line-height: 30px;
+            text-decoration: none;
+        }
+
+        .setuo-tab ul{
+            margin-bottom: 1px;
+            margin-right: 10px;
+        }
+
+        .setuo-tab ul li{
+            float: right;
+        }
+    </style>
+    <script>
+        layui.use(['element', 'form', 'layer', 'laydate'], function () {
+            var element = layui.element;
+            var form = layui.form;
+            var layer = layui.layer;
+            var laydate = layui.laydate;
+
+            laydate.render({
+                elem: '#movie-date'
+            });
+        });
+
+        ($(function () {
+            var age = $("#age").val();
+            if (age == 0){
+                $(".age-message").html("初始值为0，请根据自身情况设置");
+            }
+
+            //刷新按钮
+            $("#reflash-form").click(function () {
+                window.location.reload();
+            });
+
+            //提交保存按钮
+            $("#submit-form").click(function (e) {
+                e.preventDefault();
+                var age = $("#age").val();
+                var occupation = $("#occupation").val();
+                if (!occupation) {
+                    $("#occupation").val("无");
+                }
+                if (age >= 0) {
+                    var form = $("#userinfo-form").serialize();
+                    //console.log(form);
+                    $.ajax({
+                        url: "/userinfo/savedata",
+                        data: form,
+                        type: "post",
+                        dataType:'json',
+                        success: function (result) {
+                            console.log(result);
+                        }
+                    });
+                }else {
+                    layer.msg("年龄不能为负数");
+                }
+            });
+        }));
+
+        ($(function () {
+            function checknew(){
+                var one = $("#newpwd-one").val();
+                var two = $("#newpwd-two").val();
+                if (one != two){
+                    return true;
+                }else {
+                    return false;
+                }
+            }
+
+            function checkold(){
+                var userId = $("#userIdt").val();
+                var re;
+                $.ajax({
+                    url: "/userinfo/checkpwd",
+                    async: false,
+                    data: {
+                        userId: userId,
+                        pwd: $("#oldpwd").val()
+                    },
+                    type: "post",
+                    success: function (result) {
+                        console.log(result);
+                        if (result.statu == "500"){
+                            re = false;
+                        }else {
+                            re = true;
+                        }
+                    }
+                });
+                return re;
+            }
+
+            $("#re-pwd").click(function (e) {
+                e.preventDefault();
+                $("#oldpwd").val('');
+                $("#newpwd-one").val('');
+                $("#newpwd-two").val('');
+            });
+
+            $("#oldpwd").blur(function () {
+                var r = checkold();
+                if (r){
+                    $(".old-pwd-message").html("");
+                }else {
+                    $(".old-pwd-message").html("输入的密码不正确");
+                }
+            });
+
+            $("#newpwd-two").blur(function () {
+                if (checknew()){
+                    $(".new-two-pwd-message").html("两次密码必须相同");
+                }else {
+                    $(".new-two-pwd-message").html("");
+                }
+            });
+
+            $("#save-pwd").click(function (e) {
+                e.preventDefault();
+                if (!checknew() && checkold()){
+                    var userId = $("#userIdt").val();
+                    $.ajax({
+                        url: "/userinfo/changepwd",
+                        data: {
+                            userId: userId,
+                            newPwd: $("#newpwd-one").val()
+                        },
+                        type: "post",
+                        success: function (result) {
+                            console.log(result);
+                            if (result.statu == "500"){
+                                layer.msg(result.message);
+                            }else {
+                                layer.msg(result.message);
+                                window.location.href = "/login";
+                            }
+                            $("#re-pwd").click();
+                        }
+                    });
+                }else {
+                    alert("信息错误");
+                    $("#re-pwd").click();
+                }
+            });
+        }));
+
+        ($(function () {
+            $("#re-mv").click(function (e) {
+                e.preventDefault();
+                $("input[name='name']").val('');
+                $("input[name='date']").val('');
+            });
+
+            $("#save-mv").click(function (e) {
+                e.preventDefault();
+                var name = $("input[name='name']").val();
+                var date = $("input[name='date']").val();
+                if (name != '' && name != null && date != '' && date != null){
+                    var form = $("#upmovie-form").serialize();
+                    //console.log(form);
+                    $.ajax({
+                        url: "/movieinfo/savemovie",
+                        data: form,
+                        type: "post",
+                        dataType:'json',
+                        success: function (result) {
+                            console.log(result);
+                            if (result.statu == "500"){
+                                layer.msg(result.message);
+                            }else {
+                                layer.msg(result.message);
+                                $("#re-mv").click();
+                            }
+                        }
+                    });
+                }else {
+                    layer.msg("内容不能为空");
+                }
+            });
+
+        }));
+    </script>
+</head>
+<body>
+<input style="display: none" type="text" id="userIdt" th:value="${session.user.userId}">
+<ul class="layui-nav layui-bg-cyan">
+    <li class="layui-nav-item">
+        <a style="font-size: 20px;text-decoration: none;" href="/index">MovieSug</a>
+    </li>
+    <li class="layui-nav-item" style="float: right; margin-right: 50px">
+        <div th:if="${session.user != null}">
+            <a style="font-size: 20px;text-decoration: none" th:text="${session.user.userName}">用户名</a>
+            <dl class="layui-nav-child topbar-per">
+                <dd><a th:href="@{/userinfo/personal(userId=${session.user.userId})}">设置个人信息</a></dd>
+                <dd><a th:href="@{/logout}">退出</a></dd>
+            </dl>
+        </div>
+        <a style="font-size: 20px;text-decoration: none;" th:href="@{/login}" th:unless="${session.user != null}">Login</a>
+    </li>
+</ul>
+<div class="layui-container">
+    <div class="layui-col-md8 layui-col-lg-offset2">
+        <div class="layui-row">
+            <div class="layui-col-md4">
+                <span style="font-size: 30px;padding-left: 10px"
+                      th:text="${userinfo.getUserName()}+ 的设置"></span>
+            </div>
+        </div>
+        <div class="layui-tab setuo-tab">
+            <ul class="layui-tab-title">
+                <li th:if="${isAdmin == 'true'}">电影添加</li>
+                <li>评分数据</li>
+                <li>修改密码</li>
+                <li class="layui-this">个人设置</li>
+            </ul>
+            <div class="layui-tab-content">
+                <!--电影添加-->
+                <div th:if="${isAdmin}" class="layui-tab-item">
+                    <form id="upmovie-form" class="layui-form" style="width: 430px;margin: 0px auto">
+                        <div class="layui-form-item layui-row">
+                            <label class="layui-form-label" style="width: 100px">电影名称</label>
+                            <div class="layui-input-block">
+                                <input class="layui-input" name="name">
+                                <div class="layui-form-mid layui-word-aux old-pwd-message"></div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item layui-row">
+                            <label class="layui-form-label" style="width: 100px">上线日期</label>
+                            <div class="layui-input-block">
+                                <input class="layui-input" id="movie-date" name="date">
+                                <div class="layui-form-mid layui-word-aux new-pwd-message"></div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item layui-row">
+                            <button style="float: right"
+                                    id="re-mv"
+                                    class="layui-btn layui-btn-radius layui-btn-danger">重置</button>
+                            <button style="float: right; margin-right: 10px"
+                                    id="save-mv"
+                                    class="layui-btn layui-btn-radius">上传</button>
+                        </div>
+                    </form>
+                </div>
+                <!--评分数据-->
+                <div class="layui-tab-item">
+                    <div class="layui-container" id="chart" style="width: 750px;height:400px;">
+
+                    </div>
+                    <script type="text/javascript">
+                        var myChart = echarts.init(document.getElementById('chart'));
+                        // 指定图表的配置项和数据
+                        myChart.setOption({
+                            title: {
+                                text: '用户评分数据'
+                            },
+                            xAxis: {
+                                data: []
+                            },
+                            yAxis: {},
+                            series: [{
+                                type: 'bar',
+                                data: []
+                            }]
+                        });
+                        var userId = $("#userIdt").val();
+                        $.get('/score/getuserscore', {userId: userId}).done(function (data) {
+                            console.log(data)
+                            movieIds = [];
+                            scores = [];
+                            for(mid in data){
+                                movieIds.push(data[mid].movieName);
+                                scores.push(data[mid].score)
+                            }
+                            // console.log(movieIds)
+                            // console.log(scores)
+                            // 填入数据
+                            myChart.setOption({
+                                xAxis: {
+                                    data: movieIds
+                                },
+                                series: [{
+                                    // 根据名字对应到相应的系列
+                                    name: '评分',
+                                    data: scores
+                                }]
+                            });
+                        });
+                    </script>
+                </div>
+                <!--修改密码-->
+                <div class="layui-tab-item">
+                    <form id="changepwd-form" class="layui-form">
+                        <div class="layui-form-item layui-row">
+                            <div class="layui-input-block">
+                                <input class="layui-input" placeholder="请输入旧密码" type="password" id="oldpwd">
+                                <div class="layui-form-mid layui-word-aux old-pwd-message"></div>
+                            </div>
+
+                        </div>
+                        <div class="layui-form-item layui-row">
+                            <div class="layui-input-block">
+                                <input class="layui-input" placeholder="请输入新密码" type="password" id="newpwd-one">
+                                <div class="layui-form-mid layui-word-aux new-pwd-message"></div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item layui-row">
+                            <div class="layui-input-block">
+                                <input class="layui-input" placeholder="请再次输入新密码" type="password" id="newpwd-two">
+                                <div class="layui-form-mid layui-word-aux new-two-pwd-message"></div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item layui-row">
+                            <button style="float: right"
+                                    id="re-pwd"
+                                    class="layui-btn layui-btn-radius layui-btn-danger">重置</button>
+                            <button style="float: right; margin-right: 10px"
+                                    id="save-pwd"
+                                    class="layui-btn layui-btn-radius">保存</button>
+                        </div>
+                    </form>
+                </div>
+                <!--个人设置-->
+                <div class="layui-tab-item layui-show">
+                    <form id="userinfo-form" class="layui-form" th:object="${userinfo}">
+                        <input style="display: none" type="text" id="userId" th:field="*{userId}" th:value="*{userId}">
+                        <input style="display: none" type="text" th:field="*{userName}" th:value="*{userName}">
+                        <div class="layui-form-item layui-row">
+                            <label class="layui-form-label" style="width: 100px">年龄</label>
+                            <div class="layui-input-block">
+                                <input class="layui-input" type="number" id="age" th:field="*{age}">
+                                <div class="layui-form-mid layui-word-aux age-message"></div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item layui-row">
+                            <label class="layui-form-label" style="width: 100px">性别</label>
+                            <div class="layui-input-block">
+                                <select id="gender" lay-search th:field="*{gender}" th:value="*{gender}">
+                                    <option value="男">男</option>
+                                    <option value="女">女</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-form-item layui-row">
+                            <label class="layui-form-label" style="width: 100px">职业</label>
+                            <div class="layui-input-block">
+                            <input class="layui-input" id="occupation"
+                                   th:field="*{occupation}"
+                                   th:value="*{occupation}">
+                            </div>
+                        </div>
+                        <div class="layui-form-item layui-row" style="display: none">
+                            <label class="layui-form-label" style="width: 100px">推荐算法</label>
+                            <div class="layui-input-block">
+                                <select id="setUpAlgo" lay-verify="" lay-search
+                                        th:field="*{setUpAlgo}"
+                                        th:value="*{setUpAlgo}">
+                                    <option value="userbased">userbased</option>
+                                    <option value="itembased">itembased</option>
+                                    <option value="als">als</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-form-item layui-row">
+                            <button style="float: right"
+                                    id="reflash-form"
+                                    class="layui-btn layui-btn-radius layui-btn-danger">刷新</button>
+                            <button style="float: right; margin-right: 10px"
+                                    id="submit-form"
+                                    class="layui-btn layui-btn-radius">保存</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<hr class="layui-bg-cyan">
+
+</body>
+</html>

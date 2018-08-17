@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<!--suppress ThymeleafVariablesResolveInspection-->
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8" xmlns:th="http://www.thymeleaf.org">
+    <title>MovieSug-电影详情</title>
+    <link rel="stylesheet" href="/layui/css/layui.css">
+    <!--jquery-->
+    <script src="/jquery/jquery-3.3.1.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+    <!--layui-->
+    <script src="/layui/layui.js"></script>
+    <!--bootstrap-->
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.js"></script>
+    <!--jquery.raty-->
+    <script src="/lib/jquery.raty.js"></script>
+    <!--jqzoom-->
+    <script type="text/javascript" src="/jqzoom/js/jquery.jqzoom.js"></script>
+    <link rel="stylesheet" href="/jqzoom/style/jqzoom.css" type="text/css" media="screen" />
+    <!--summernote-->
+    <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.8/summernote.css" rel="stylesheet">
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.8/summernote.js"></script>
+    <link href="/summernote/summernote.css" rel="stylesheet">
+    <script src="/summernote/summernote.js"></script>
+    <style>
+        .logo_search {
+            height: 50px;
+        }
+
+        .search_bar {
+            margin-top: 10px;
+            border-bottom-left-radius: 10px;
+            border-top-left-radius: 10px;
+            font-size: 20px;
+            padding-left: 10px;
+        }
+
+        .search_icon {
+            height: 38px;
+            width: 50px;
+            margin-top: 10px;
+            border: 1px solid #e6e6e6;
+            border-bottom-right-radius: 10px;
+            border-top-right-radius: 10px;
+            text-align: center;
+        }
+
+        .class_logo {
+            font-size: 40px;
+        }
+
+        .movie_name{
+            font-size: 30px;
+        }
+
+        .titlepage{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .titlepage img {
+            margin-top: 30px;
+            width: auto;
+            height: auto;
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        .info{
+            margin-top: 10px;
+            font-size: 20px;
+            margin-left: 20px;
+        }
+
+        .info div{
+            margin-top: 10px;
+        }
+
+        .hint{
+            font-size: 15px;
+            font-weight: bold;
+        }
+
+        .topbar-per dd a{
+            font-size: 17px;
+            line-height: 30px;
+            text-decoration: none;
+        }
+
+        #summary{
+            font-size: 15px;
+            overflow: hidden;
+        }
+
+        .randomFilm div a img{
+            width: 150%;
+            height: 53%;
+        }
+
+        .com-area{
+            align-content: center;
+        }
+
+        .do-com{
+            float: right;
+        }
+
+        .com-submit:hover{
+            background: #3fae32;
+        }
+    </style>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        layui.use(['element', 'layer', 'laypage'], function () {
+            var element = layui.element;
+            var laypage = layui.laypage;
+            var layer = layui.layer;
+
+            //分页
+            //获取评论总数、页大小
+
+            var totalCount;
+            var pageSize;
+            var currentPage = 0;
+            var movieId = $("#movie").val();
+            $.ajax({
+                url: "/movieinfo/getcom",
+                async: false,
+                data: {
+                    movieId: movieId,
+                    currentPage: currentPage == 0 ? "" : currentPage
+                },
+                dataType: 'json',
+                type: 'post',
+                success:function (result) {
+                    console.log(result);
+                    totalCount = result.data.totalCount;
+                    pageSize = result.data.pageSize;
+                    currentPage = result.data.currentPage;
+                    if (result.data.data.length == 0){
+                        $(".begincom").append("<span>暂无评论</span>");
+                    } else {
+                        $(".begincom").empty();
+                        for (moviecom in result.data.data) {
+                            $(".begincom").append("<div class='layui-row'>" +
+                                "        <div class='movie_comment'>" +
+                                "            <span style='font-size: 20px;color: aqua'>" +
+                                result.data.data[moviecom].userName +
+                                "            </span>" +
+                                "            <span>看过</span>" +
+                                "            <span style='float: right;margin-right: 10px;font-size: 20px'>" +
+                                result.data.data[moviecom].createDate +
+                                "            </span>" +
+                                "            <p>" +
+                                result.data.data[moviecom].commentText +
+                                "            </p>" +
+                                "        </div>" +
+                                "    </div>" +
+                                "    <hr class='layui-bg-cyan'>");
+                        }
+                        //分页
+                        laypage.render({
+                            elem: 'com-pages',
+                            count: totalCount,
+                            limit: pageSize,
+                            layout: ['prev', 'page', 'next', 'refresh'],
+                            jump: function (obj, first) {
+                                if (!first) {
+                                    console.log(obj);
+                                    currentPage = obj.curr - 1;
+                                    totalCount = obj.count;
+                                    pageSize = obj.limit;
+                                    $.ajax({
+                                        url: "/movieinfo/getcom",
+                                        async: false,
+                                        data: {
+                                            movieId: movieId,
+                                            currentPage: currentPage == 0 ? "" : currentPage
+                                        },
+                                        dataType: 'json',
+                                        type: 'post',
+                                        success: function (result) {
+                                            console.log(result);
+                                            totalCount = result.data.totalCount;
+                                            pageSize = result.data.pageSize;
+                                            currentPage = result.data.currentPage;
+                                            $(".begincom").empty();
+                                            for (moviecom in result.data.data) {
+                                                $(".begincom").append("<div class='layui-row'>" +
+                                                    "        <div class='movie_comment'>" +
+                                                    "            <span style='font-size: 20px;color: aqua'>" +
+                                                    result.data.data[moviecom].userName +
+                                                    "            </span>" +
+                                                    "            <span>看过</span>" +
+                                                    "            <span style='float: right;margin-right: 10px;font-size: 20px'>" +
+                                                    result.data.data[moviecom].createDate +
+                                                    "            </span>" +
+                                                    "            <p>" +
+                                                    result.data.data[moviecom].commentText +
+                                                    "            </p>" +
+                                                    "        </div>" +
+                                                    "    </div>" +
+                                                    "    <hr class='layui-bg-cyan'>");
+                                            }
+                                        }
+                                    });
+                                }
+                            }
+                        });
+                    }
+                }
+            });
+        });
+        ($(function () {
+            var name = "[[${movie.getName()}]]";
+            //获取详情
+            $.ajax({
+                url:"/movieinfo/info?movieName="+name,
+                success:function(result){
+                    $(".directors span").after().append("<span>"+result.directer+"</span>");
+                    $(".actors span").after().append("<span>"+result.actor+"</span>");
+                    $(".type span").after().append("<span>"+result.type+"</span>");
+                    $(".summary span").after().append("<br><p style='margin-bottom: 0px' id='summary'>"+result.movieSummary+"</p>");
+                    $(".doubanurl span").after().append("<a href='"+result.url+"'>去豆瓣看看</a>");
+                    var summary = $("#summary");
+                    var oldheight = summary.height();
+                    var supheight = 65;
+                    if (oldheight > supheight){
+                        summary.height(supheight);
+                        summary.after("<a style='font-size: 15px' id='more' href='#'>更多</a>");
+                    }
+                    $("#more").click(function () {
+                        if (summary.height() == supheight){
+                            $(this).html("隐藏");
+                            summary.height(oldheight);
+                        }else if (summary.height() > supheight) {
+                            $(this).html("更多");
+                            summary.height(supheight);
+                        }
+                    });
+                }
+            });
+
+            //电影评分
+            $.fn.raty.defaults.path = '/lib/img';
+            $('.movie_score').raty({
+                number: 5, //多少个星星设置
+                /*score: initscore,*/
+                targetType: 'hint', //类型选择，number是数字值，hint，是设置的数组值
+                path: '/lib/img',
+                hints: ['差', '一般', '好', '非常好', '全五星'],
+                cancelOff: 'cancel-off.png',
+                cancelOn: 'cancel-on.png',
+                size: 100,
+                starHalf: 'star-half.png',
+                starOff: 'star-off.png',
+                starOn: 'star-on.png',
+                target: '#function-hint',
+                cancel: false,
+                targetKeep: true,
+                click: function(score, evt) {
+                    var user = [[${session.user != null}]];
+                    //alert('ID: ' + $(this).attr('id') + "\nscore: " + score + "\nevent: " + evt.type);
+                    if (user){
+                        var userId = $("#user").val();
+                        var movieId = [[${movie.getMovieId()}]];
+                        saveScore(userId, movieId, score);
+                    }else{
+                        layer.msg("请先登陆");
+                    }
+                }
+            });
+
+            var userId = $("#user").val();
+            var movieId = [[${movie.getMovieId()}]];
+            if (userId) {
+                $.ajax({
+                    url: "/score/getscore?userId=" + userId + "&movieId=" + movieId,
+                    success: function (result) {
+                        /*console.log(result)*/
+                        $('.movie_score').raty({
+                            number: 5, //多少个星星设置
+                            score: result.score,
+                            targetType: 'hint', //类型选择，number是数字值，hint，是设置的数组值
+                            path: '/lib/img',
+                            hints: ['差', '一般', '好', '非常好', '全五星'],
+                            cancelOff: 'cancel-off.png',
+                            cancelOn: 'cancel-on.png',
+                            size: 100,
+                            starHalf: 'star-half.png',
+                            starOff: 'star-off.png',
+                            starOn: 'star-on.png',
+                            target: '#function-hint',
+                            cancel: false,
+                            targetKeep: true,
+                            click: function(score, evt) {
+                                var user = [[${session.user != null}]];
+                                //alert('ID: ' + $(this).attr('id') + "\nscore: " + score + "\nevent: " + evt.type);
+                                if (user){
+                                    var userId = $("#user").val();
+                                    var movieId = [[${movie.getMovieId()}]];
+                                    saveScore(userId, movieId, score);
+                                }else{
+                                    layer.msg("请先登陆");
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+
+            //图片放大
+            var img = /*[[${movie.getImageUrl()}]]*/ null;
+            if (img) {
+                $(".titlepage img").attr("jqimg", img);
+                $(".titlepage").jqueryzoom({
+                    xzoom: 250,
+                    yzoom: 250,
+                    offset: 10,
+                    position: "right"
+                });
+            }
+
+            //提交评论按钮事件
+            var HelloButton = function (context) {
+                var ui = $.summernote.ui;
+                var button = ui.button({
+                    className: 'com-submit',
+                    contents: "<i class='fa fa-child'/>提交",
+                    tooltip: '提交正文',
+                    click: function () {
+                        var text = $('.editor').summernote('code');
+                        saveCom(userId, movieId, text);
+                    }
+                });
+
+                return button.render();   // return button as jquery object
+            }
+
+            //富文本编辑器
+            $('.editor').summernote({
+                placeholder: '请输入你的评论',
+                tabsize: 4,
+                height: 300,
+                callbacks : {
+                    onImageUpload : function(files) {
+                        //console.log(files)
+                    }
+                },
+                toolbar: [
+                    ['submit', ['submit']],
+                    ['style', ['bold', 'italic', 'underline', 'clear']],
+                    ['font', ['strikethrough', 'superscript', 'subscript']],
+                    ['fontsize', ['fontsize']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['height', ['height']],
+                    ['fullscreen',['fullscreen']], //全屏
+                    ['codeview',['codeview']], //查看html代码
+                    ['undo',['undo']], //撤销
+                    ['redo',['redo']], //取消撤销
+                ],
+                buttons: {
+                    submit: HelloButton
+                }
+            });
+        }));
+        //提交评论
+        function saveCom(userId, movieId, text) {
+            //console.log("保存"+userId+"对电影"+movieId+"的评论")
+            //console.log(text);
+            if (userId) {
+                $.ajax({
+                    url: '/movieinfo/savecom',
+                    data: {
+                        //请求参数
+                        userId: userId,
+                        movieId: movieId,
+                        commentText: text
+                    },
+                    dataType: 'json',
+                    type: 'post',
+                    success: function (result) {
+                        console.log(result);
+                        $(".layui-icon-refresh").click();
+                        $(".do-com").click();
+                        $('.editor').summernote('code', '');
+                    }
+                });
+            }else {
+                layer.alert("请登陆");
+            }
+        }
+
+        //保存评分
+        function saveScore(userId, movieId, score) {
+            $.ajax({
+                url:'/score/savescore',
+                data: {
+                    //请求参数
+                    userId: userId,
+                    movieId: movieId,
+                    score: score
+                },
+                dataType:'json',
+                type:'post',
+                success:function (result) {
+                    if (result.statu == "200") {
+
+                    }else if (result.statu == "500") {
+                        layer.alert(result.message);
+                    }else {
+                        layer.alert("错误！系统出错！请联系程序员");
+                    }
+                }
+            })
+        }
+
+        //搜索表单提交
+        $(document).ready(function () {
+            $(".submit-form").click(function () {
+                if ($("input[name='keyword']").val()){
+                    $("#searchform").submit();
+                }
+            });
+        });
+        /*]]>*/
+    </script>
+</head>
+<body>
+<ul class="layui-nav layui-bg-cyan">
+    <li class="layui-nav-item">
+        <a style="font-size: 20px;text-decoration: none;" href="/index">MovieSug</a>
+    </li>
+    <li class="layui-nav-item" style="float: right; margin-right: 50px">
+        <div th:if="${session.user != null}">
+            <a style="font-size: 20px" th:text="${session.user.userName}">用户名</a>
+            <dl class="layui-nav-child topbar-per">
+                <dd><a th:href="@{/userinfo/personal(userId=${session.user.userId})}">设置个人信息</a></dd>
+                <dd><a th:href="@{/logout}">退出</a></dd>
+            </dl>
+        </div>
+        <a style="font-size: 20px" th:href="@{/login}" th:unless="${session.user != null}">Login</a>
+    </li>
+</ul>
+<div class="layui-container">
+    <div class="layui-row logo_search layui-col-space2">
+        <div class="layui-col-md3" style="text-align: center">
+            <a class="class_logo" href="javascript:return false;" style="cursor:default;text-decoration: none;">MovieSug</a>
+        </div>
+        <div class="layui-col-md8">
+            <form id="searchform" method="post" action="#" th:action="@{/index}">
+                <input type="text" name="keyword" placeholder="搜索" autocomplete="off" class="layui-input search_bar">
+            </form>
+        </div>
+        <div class="layui-col-md1 search_icon">
+            <a href="#" class="layui-icon submit-form" style="font-size: 30px; color: #1E9FFF;">&#xe615;</a>
+        </div>
+    </div>
+</div>
+<hr class="layui-bg-cyan">
+<div th:if="${session.user != null}" style="display: none">
+    <input th:value="${session.user.getUserId()}" id="user"/>
+</div>
+<div style="display: none">
+    <input th:value="${movie.getMovieId()}" id="movie"/>
+</div>
+<div class="layui-container">
+    <div class="layui-row">
+        <div class="layui-col-md6 movie_name">
+            <span th:text="${movie.getName()}"></span>
+        </div>
+    </div>
+    <div class="layui-row">
+        <div class="layui-col-md2 titlepage">
+            <img th:src="@{${movie.getImageUrl()}}">
+        </div>
+        <div class="layui-col-md6 info">
+            <div class="layui-row directors">
+                <span>导演：</span>
+            </div>
+            <div class="layui-row actors">
+                <span>演员：</span>
+            </div>
+            <div class="layui-row type">
+                <span>类型：</span>
+            </div>
+            <div class="layui-row summary">
+                <span>简介：</span>
+            </div>
+            <div class="layui-row doubanurl">
+                <span>豆瓣链接：</span>
+            </div>
+            <div class="layui-row score">
+                <p>我的评分：</p>
+                <div class="movie_score">
+
+                </div>
+                <div id="function-hint" class="hint"></div>
+            </div>
+        </div>
+        <div class="layui-col-md1 layui-col-md-offset2">
+            <div class="randomFilm">
+                <p style="font-size: 20px;text-align: center;width: 143px;margin-bottom: 0px" class="bg-info">随便看看</p>
+                <script type="text/javascript" src="http://www.douban.com/service/badge/63006378/?selection=random&amp;picsize=small&amp;hideself=on&amp;show=collection&amp;n=1&amp;hidelogo=on&amp;cat=movie&amp;columns=1"></script>
+            </div>
+        </div>
+    </div>
+</div>
+<hr class="layui-bg-cyan">
+<div class="layui-container com-area">
+    <span style="font-size: 30px">评论区</span>
+    <button type="button" class="btn btn-primary do-com" data-toggle="collapse"
+            data-target="#com">
+        评论
+    </button>
+    <div id="com" class="collapse">
+        <hr class="layui-bg-cyan">
+        <textarea class="editor"></textarea>
+    </div>
+    <hr class="layui-bg-cyan">
+    <div class="begincom"></div>
+    <!--分页-->
+    <div id="com-pages" align="center"></div>
+</div>
+</body>
+</html>

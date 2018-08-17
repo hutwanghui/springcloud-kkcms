@@ -1,0 +1,54 @@
+server:
+    session:
+      timeout: 600
+    port: 8969
+spring:
+#  aop:
+#    proxy-target-class: true
+  application:
+    name: kkcms-hadoop
+#  session:
+#    store-type: redis
+#  redis:
+#      host: localhost
+#      database: 9
+#      pool:
+#        max-active: 8
+#        min-idle: 0
+#        max-idle: 0
+#        max-wait: -1
+#      password: wh970121
+  profiles:
+    active: dev
+#  hadoop:
+#    fs-uri: hdfs://localhost:9000
+#    resource-manager-host: localhost
+#  yarn:
+#    appName: yarn-boot-simple
+#    applicationDir: /app/yarn-boot-simple/
+#    client:
+#      files:
+#            - "file:build/libs/yarn-boot-simple-container-0.1.0.jar"
+#            - "file:build/libs/yarn-boot-simple-appmaster-0.1.0.jar"
+#      launchcontext:
+#            archiveFile: yarn-boot-simple-appmaster-0.1.0.jar
+#    appmaster:
+#      containerCount: 1
+#      launchcontext:
+#        archiveFile: yarn-boot-simple-container-0.1.0.jar
+#
+
+
+eureka:
+    client:
+        serviceUrl:
+            defaultZone: http://localhost:8961/eureka/
+
+security:
+  basic:
+    enabled: false
+  user:
+    name: admin
+    password: admin123456
+
+

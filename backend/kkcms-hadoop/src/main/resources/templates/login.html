@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<!--suppress ThymeleafVariablesResolveInspection-->
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>MovieSug-用户登录</title>
+    <link rel="stylesheet" href="/layui/css/layui.css">
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+    <script src="/layui/layui.js"></script>
+</head>
+<style>
+    body{
+        background:url("/pictures/login_bg.jpg");
+    }
+    .center-container{
+        margin-top: 170px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .login_form{
+        width: 300px;
+        height: 230px;
+        border: 1px solid #9F9F9F;
+        padding: 20px;
+        border-radius: 10px;
+        background: #204349;
+    }
+
+    .login_form h1{
+        color: rgba(255,255,255,.7);
+    }
+
+    .login_form input{
+        margin-top: 20px;
+    }
+
+    .login-btn{
+        margin-top: 20px;
+    }
+</style>
+<script type="text/javascript">
+    layui.use(['element', 'layer'], function () {
+        var element = layui.element;
+    });
+    ($(function () {
+        $("input[name='password']").focus(function () {
+            $(this).attr("type", "password");
+        });
+
+        $(".login_form").submit(function (e) {
+            e.preventDefault();
+            $.ajax({
+                url:'/dologin',
+                data: $('.login_form').serialize(),
+                dataType:'json',
+                type:'post',
+                success:function (result) {
+                    if (result.statu == "200") {
+                        window.location.href = "/index";
+                    }else if (result.statu == "500") {
+                        layer.alert(result.message);
+                    }else {
+                        layer.alert("错误！系统出错！请联系程序员");
+                    }
+                }
+            })
+        });
+
+    }));
+</script>
+<!--<script th:inline="javascript" type="text/javascript">
+    ($(function () {
+        var reuser = [[${reuser}]];
+        if (reuser != null){
+            $("input[name='userName']").val(reuser);
+        }
+    }));
+</script>-->
+<body>
+<ul class="layui-nav layui-bg-cyan">
+    <li class="layui-nav-item">
+        <a style="font-size: 20px" href="/index">MovieSug</a>
+    </li>
+</ul>
+<div class="center-container">
+    <form class="login_form" th:action="@{/dologin}" method="post">
+        <h1>登 录</h1>
+        <input class="layui-input" name="userName" type="text" placeholder="用户名" autocomplete="off">
+        <input class="layui-input" name="password" placeholder="密码" autocomplete="off">
+        <div class="layui-input-inline login-btn">
+            <button class="layui-btn layui-btn-lg bt-login" style="width: 135px">登录</button>
+            <a th:href="@{/register}" class="layui-btn layui-btn-lg layui-btn-normal" style="width: 135px;margin-left: 25px">注册</a>
+        </div>
+    </form>
+</div>
+</body>
+</html>

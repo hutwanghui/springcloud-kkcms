@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>MovieSug-注册</title>
+    <link rel="stylesheet" href="/layui/css/layui.css">
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+    <script src="/layui/layui.js"></script>
+</head>
+<style>
+    body {
+        background: url('/pictures/login_bg.jpg');
+    }
+
+    .center-container {
+        margin-top: 170px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .register_form {
+        width: 300px;
+        height: 273px;
+        border: 1px solid #9F9F9F;
+        padding: 20px;
+        border-radius: 10px;
+        background: #204349;
+    }
+
+    .register_form h1 {
+        color: rgba(255, 255, 255, .7);
+    }
+
+    .register_form input {
+        margin-top: 20px;
+    }
+
+    .login-btn {
+        margin-top: 20px;
+    }
+</style>
+<script type="text/javascript">
+    layui.use(['element', 'layer'], function () {
+        var element = layui.element;
+    });
+    ($(function () {
+        $("input[name='password']").focus(function () {
+            $(this).attr("type", "password");
+        });
+
+        $("input[name='password-again']").focus(function () {
+            $(this).attr("type", "password");
+        });
+
+        $("input[name='password-again']").blur(function () {
+            checkPwd();
+        });
+
+        /*$(".bt-register").click(function () {
+
+
+        });*/
+        
+        $("#register-form").submit(function (e) {
+            e.preventDefault();
+            var pwd = checkPwd();
+            if (pwd){
+                doregister();
+            } else{
+
+            }
+        });
+    }));
+
+    function checkPwd() {
+        if ($("input[name='password']").val() != $("input[name='password-again']").val()) {
+            layer.msg('两次输入密码不一致!');
+            return false;
+        } else {
+            return true;
+        }
+    }
+    
+    function doregister() {
+        $.ajax({
+            url:'/doregister',
+            data: $('#register-form').serialize(),
+            dataType:'text',
+            type:'post',
+            success:function (result) {
+                jsonvalue = jQuery.parseJSON(result);
+                if (jsonvalue.statu == "200") {
+                    //window.location.href = "/login?user="+jsonvalue.data;
+                    window.location.href = "/login";
+                }else if (jsonvalue.statu == "500") {
+                    layer.alert(jsonvalue.message);
+                }else {
+                    layer.alert("错误！系统出错！请联系程序员");
+                }
+            }
+        })
+    }
+</script>
+<body>
+<ul class="layui-nav layui-bg-cyan">
+    <li class="layui-nav-item">
+        <a style="font-size: 20px" th:href="@{/index}">MovieSug</a>
+    </li>
+</ul>
+<div class="center-container">
+    <form class="register_form" id="register-form" th:action="@{/doregister}" method="post">
+        <h1>注 册</h1>
+        <input class="layui-input" name="userName" type="text" placeholder="用户名" autocomplete="off">
+        <input class="layui-input" name="password" placeholder="密码" autocomplete="off">
+        <input class="layui-input" name="password-again" placeholder="确认密码" autocomplete="off">
+        <div class="layui-input-inline login-btn">
+            <button class="layui-btn layui-btn-lg bt-register" style="width: 135px">注册</button>
+            <a th:href="@{/login}" class="layui-btn layui-btn-lg layui-btn-normal "
+               style="width: 135px;margin-left: 25px">去登陆</a>
+        </div>
+    </form>
+</div>
+</body>
+</html>

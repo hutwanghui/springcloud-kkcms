@@ -1,0 +1,28 @@
+<ul class="layui-nav layui-bg-cyan" xmlns:th="http://www.w3.org/1999/xhtml">
+    <li class="layui-nav-item">
+        <a style="font-size: 20px;text-decoration: none;" href="/index">MovieSug</a>
+    </li>
+    <li class="layui-nav-item" style="float: right; margin-right: 50px">
+        <div th:if="${session.user != null}">
+            <a style="font-size: 20px" th:href="@{/userinfo/${session.user.userId}}" th:text="${session.user.userName}">用户名</a>
+            <dl class="layui-nav-child topbar-per">
+                <dd><a href="">个人信息</a></dd>
+                <dd><a th:href="@{/logout}">退出</a></dd>
+            </dl>
+        </div>
+        <a style="font-size: 20px" th:href="@{/login}" th:unless="${session.user != null}">Login</a>
+    </li>
+</ul>
+<div class="layui-container">
+    <div class="layui-row logo_search layui-col-space2">
+        <div class="layui-col-md3" style="text-align: center">
+            <a class="class_logo" href="javascript:return false;" style="cursor:default;text-decoration: none;">MovieSug</a>
+        </div>
+        <div class="layui-col-md8">
+            <input type="text" placeholder="搜索" autocomplete="off" class="layui-input search_bar">
+        </div>
+        <div class="layui-col-md1 search_icon">
+            <a href="" class="layui-icon" style="font-size: 30px; color: #1E9FFF;">&#xe615;</a>
+        </div>
+    </div>
+</div>
