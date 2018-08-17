@@ -1,0 +1,42 @@
+server:
+    session:
+      timeout: 600
+    port: 8963
+
+spring:
+  aop:
+    proxy-target-class: true
+  application:
+    name: kkcms-app
+  data:
+    mongodb:
+      authentication-database: admin
+      uri: mongodb://wanghui:wh123456@127.0.0.1:27015/chat
+  session:
+    store-type: mongo
+
+
+eureka:
+    client:
+        serviceUrl:
+            defaultZone: http://localhost:8961/eureka/
+
+security:
+  basic:
+    enabled: false
+  user:
+    name: admin
+    password: admin123456
+
+tcp:
+  port: 8877
+boss:
+  thread:
+    count: 2
+worker:
+  thread:
+    count: 2
+so:
+  keepalive:  true
+  backlog: 100
+

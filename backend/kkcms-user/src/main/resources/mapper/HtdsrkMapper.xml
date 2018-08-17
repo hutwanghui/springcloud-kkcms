@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kk.user.mapper.HtdsrkMapper" >
+  <resultMap id="BaseResultMap" type="com.kk.user.entity.Htdsrk" >
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <result column="HY_DM" property="hyDm" jdbcType="VARCHAR" />
+    <result column="JDXZMC" property="jdxzmc" jdbcType="VARCHAR" />
+    <result column="ZGSWSKFJ_DM" property="zgswskfjDm" jdbcType="VARCHAR" />
+    <result column="SKSX_DM" property="sksxDm" jdbcType="VARCHAR" />
+    <result column="SJJE" property="sjje" jdbcType="DOUBLE" />
+    <result column="NSRMC" property="nsrmc" jdbcType="VARCHAR" />
+    <result column="NSRSBH" property="nsrsbh" jdbcType="VARCHAR" />
+    <result column="DSDFPBL" property="dsdfpbl" jdbcType="LONGVARCHAR" />
+    <result column="SJXHR_DM" property="sjxhrDm" jdbcType="LONGVARCHAR" />
+    <result column="DSBL_ODS" property="dsblOds" jdbcType="LONGVARCHAR" />
+    <result column="RKRQ" property="rkrq" jdbcType="LONGVARCHAR" />
+    <result column="ZYJBL" property="zyjbl" jdbcType="LONGVARCHAR" />
+    <result column="SJDFPBL" property="sjdfpbl" jdbcType="LONGVARCHAR" />
+    <result column="DSJBL" property="dsjbl" jdbcType="LONGVARCHAR" />
+    <result column="SJJE_ODS" property="sjjeOds" jdbcType="LONGVARCHAR" />
+    <result column="PZHM" property="pzhm" jdbcType="LONGVARCHAR" />
+    <result column="XZJBL" property="xzjbl" jdbcType="LONGVARCHAR" />
+    <result column="ZFJGLX_DM" property="zfjglxDm" jdbcType="LONGVARCHAR" />
+    <result column="ZYBL_ODS" property="zyblOds" jdbcType="LONGVARCHAR" />
+    <result column="HZPZZL_DM" property="hzpzzlDm" jdbcType="LONGVARCHAR" />
+    <result column="SKSSQZ" property="skssqz" jdbcType="LONGVARCHAR" />
+    <result column="ZYDFPBL" property="zydfpbl" jdbcType="LONGVARCHAR" />
+    <result column="HZPZHM" property="hzpzhm" jdbcType="LONGVARCHAR" />
+    <result column="QXBL_ODS" property="qxblOds" jdbcType="LONGVARCHAR" />
+    <result column="DJZCLX_DM" property="djzclxDm" jdbcType="LONGVARCHAR" />
+    <result column="YSKMDM" property="yskmdm" jdbcType="LONGVARCHAR" />
+    <result column="YZPZZL_DM_DM" property="yzpzzlDmDm" jdbcType="LONGVARCHAR" />
+    <result column="ZYJDFPBL" property="zyjdfpbl" jdbcType="LONGVARCHAR" />
+    <result column="DSDFPBL_ODS" property="dsdfpblOds" jdbcType="LONGVARCHAR" />
+    <result column="PZZG_DM" property="pzzgDm" jdbcType="LONGVARCHAR" />
+    <result column="SKSSQQ" property="skssqq" jdbcType="LONGVARCHAR" />
+    <result column="HZR_DM" property="hzrDm" jdbcType="LONGVARCHAR" />
+    <result column="DSJDFPBL" property="dsjdfpbl" jdbcType="LONGVARCHAR" />
+    <result column="YHZH" property="yhzh" jdbcType="LONGVARCHAR" />
+    <result column="YHYYWD_DM" property="yhyywdDm" jdbcType="LONGVARCHAR" />
+    <result column="YHHB_DM" property="yhhbDm" jdbcType="LONGVARCHAR" />
+    <result column="ZSPM_DM" property="zspmDm" jdbcType="LONGVARCHAR" />
+    <result column="DZSPHM" property="dzsphm" jdbcType="LONGVARCHAR" />
+    <result column="JSYJ_ODS" property="jsyjOds" jdbcType="LONGVARCHAR" />
+    <result column="SSBL" property="ssbl" jdbcType="LONGVARCHAR" />
+    <result column="JSYJ" property="jsyj" jdbcType="LONGVARCHAR" />
+    <result column="SJDFPBL_ODS" property="sjdfpblOds" jdbcType="LONGVARCHAR" />
+    <result column="SKGK_DM" property="skgkDm" jdbcType="LONGVARCHAR" />
+    <result column="ZSDLFS_DM" property="zsdlfsDm" jdbcType="LONGVARCHAR" />
+    <result column="ZYBL" property="zybl" jdbcType="LONGVARCHAR" />
+    <result column="KSSL_ODS" property="ksslOds" jdbcType="LONGVARCHAR" />
+    <result column="SSJBL" property="ssjbl" jdbcType="LONGVARCHAR" />
+    <result column="SJRQ_1" property="sjrq1" jdbcType="LONGVARCHAR" />
+    <result column="QXJBL" property="qxjbl" jdbcType="LONGVARCHAR" />
+    <result column="YZPZZL_DM" property="yzpzzlDm" jdbcType="LONGVARCHAR" />
+    <result column="RKXHR_DM" property="rkxhrDm" jdbcType="LONGVARCHAR" />
+    <result column="SSBL_ODS" property="ssblOds" jdbcType="LONGVARCHAR" />
+    <result column="HYDL_DM" property="hydlDm" jdbcType="LONGVARCHAR" />
+    <result column="SKSSSWJG_DM" property="skssswjgDm" jdbcType="LONGVARCHAR" />
+    <result column="KDQSSZYQYLX_DM" property="kdqsszyqylxDm" jdbcType="LONGVARCHAR" />
+    <result column="KJRQ" property="kjrq" jdbcType="LONGVARCHAR" />
+    <result column="PZZL_DM" property="pzzlDm" jdbcType="LONGVARCHAR" />
+    <result column="DJXH" property="djxh" jdbcType="LONGVARCHAR" />
+    <result column="JKQX" property="jkqx" jdbcType="LONGVARCHAR" />
+    <result column="SSGLY_DM" property="ssglyDm" jdbcType="LONGVARCHAR" />
+    <result column="ZYDFPBL_ODS" property="zydfpblOds" jdbcType="LONGVARCHAR" />
+    <result column="SKZL_DM" property="skzlDm" jdbcType="LONGVARCHAR" />
+    <result column="ZSSWJG_DM" property="zsswjgDm" jdbcType="LONGVARCHAR" />
+    <result column="SJXHRQ" property="sjxhrq" jdbcType="LONGVARCHAR" />
+    <result column="SYBH_1" property="sybh1" jdbcType="LONGVARCHAR" />
+    <result column="YZPZXH" property="yzpzxh" jdbcType="LONGVARCHAR" />
+    <result column="YSFPBL_DM" property="ysfpblDm" jdbcType="LONGVARCHAR" />
+    <result column="LRR_DM" property="lrrDm" jdbcType="LONGVARCHAR" />
+    <result column="ZSPMDM" property="zspmdm" jdbcType="LONGVARCHAR" />
+    <result column="CBSX_DM" property="cbsxDm" jdbcType="LONGVARCHAR" />
+    <result column="SWORDROWNUM" property="swordrownum" jdbcType="LONGVARCHAR" />
+    <result column="TZLX_DM" property="tzlxDm" jdbcType="LONGVARCHAR" />
+    <result column="YSKM_DM" property="yskmDm" jdbcType="LONGVARCHAR" />
+    <result column="HYZL_DM" property="hyzlDm" jdbcType="LONGVARCHAR" />
+    <result column="ZSXM_DM" property="zsxmDm" jdbcType="LONGVARCHAR" />
+    <result column="HYML_DM" property="hymlDm" jdbcType="LONGVARCHAR" />
+    <result column="XZBL" property="xzbl" jdbcType="LONGVARCHAR" />
+    <result column="SJJDFPBL" property="sjjdfpbl" jdbcType="LONGVARCHAR" />
+    <result column="TOTALCOUNT" property="totalcount" jdbcType="LONGVARCHAR" />
+    <result column="QXBL" property="qxbl" jdbcType="LONGVARCHAR" />
+    <result column="XZBL_ODS" property="xzblOds" jdbcType="LONGVARCHAR" />
+    <result column="KJNSRSBH" property="kjnsrsbh" jdbcType="LONGVARCHAR" />
+    <result column="HZPZZG_DM" property="hzpzzgDm" jdbcType="LONGVARCHAR" />
+    <result column="DSBL" property="dsbl" jdbcType="LONGVARCHAR" />
+    <result column="HZRQ_1" property="hzrq1" jdbcType="LONGVARCHAR" />
+    <result column="RKXHRQ" property="rkxhrq" jdbcType="LONGVARCHAR" />
+    <result column="SL_1" property="sl1" jdbcType="LONGVARCHAR" />
+    <result column="KSSL" property="kssl" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="SSJE_Column_List">
+    SSJE,NSRMC,NSRSBH
+  </sql>
+  <select id="getLv0" resultMap="BaseResultMap">
+    SELECT * FROM `htds_ssje_0`;
+  </select>
+  <select id="getLv1" resultMap="BaseResultMap">
+    SELECT * FROM `htds_ssje_1`;
+  </select>
+  <select id="getLv2" resultMap="BaseResultMap">
+    SELECT * FROM `htds_ssje_2`;
+  </select>
+  <select id="getLv3" resultMap="BaseResultMap">
+    SELECT * FROM `htds_ssje_3`;
+  </select>
+  <select id="getLv4" resultMap="BaseResultMap">
+    SELECT * FROM `htds_ssje_4`;
+  </select>
+  <select id="getLv5" resultMap="BaseResultMap">
+    SELECT * FROM `htds_ssje_5`;
+  </select>
+</mapper>

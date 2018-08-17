@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kk.api.mapper.UserActionMapper">
+    <resultMap id="BaseResultMap" type="com.kk.api.entity.UserAction">
+        <!--
+          WARNING - @mbggenerated
+        -->
+        <result column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="uid" property="uid" jdbcType="VARCHAR"/>
+        <result column="item_id" property="itemId" jdbcType="VARCHAR"/>
+        <result column="behavior_type" property="behaviorType" jdbcType="VARCHAR"/>
+        <result column="item_category" property="itemCategory" jdbcType="VARCHAR"/>
+        <result column="visit_date" property="visitDate" jdbcType="DATE"/>
+        <result column="province" property="province" jdbcType="VARCHAR"/>
+    </resultMap>
+    <select id="selectTop10" resultType="com.kk.api.entity.useraction.echarts">
+      select `value`,`name` from bigdata_top10
+    </select>
+    <select id="selectBehavior" resultType="com.kk.api.entity.useraction.echarts">
+      select `value`,`name` from bigdata_behavior
+    </select>
+    <select id="selectBehaviorChina_1" resultType="com.kk.api.entity.useraction.echarts">
+      select `value`,`name` from bigdata_province where behavior_type='1'
+    </select>
+    <select id="selectBehaviorChina_2" resultType="com.kk.api.entity.useraction.echarts">
+        select `value`,`name` from bigdata_province where behavior_type='2'
+</select>
+    <select id="selectBehaviorChina_3" resultType="com.kk.api.entity.useraction.echarts">
+         select `value`,`name` from bigdata_province where behavior_type='3'
+    </select>
+    <select id="selectBehaviorChina_4" resultType="com.kk.api.entity.useraction.echarts">
+      select `value`,`name` from bigdata_province where behavior_type='4'
+    </select>
+    <select id="selectAddcartMouth" resultType="integer">
+        select times from addcart_times_mouth order by mouth ASC
+    </select>
+    <select id="selectBrowseMouth" resultType="integer">
+        select times from browse_times_mouth order by mouth ASC
+    </select>
+    <select id="selectCollectMouth" resultType="integer">
+        select times from collect_times_mouth order by mouth ASC
+    </select>
+    <select id="selectPurchasMouth" resultType="integer">
+        select times from purchase_times_mouth order by mouth ASC
+    </select>
+</mapper>
