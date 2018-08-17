@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kk.wx.cp.mapper.Atd_ruleMapper">
+    <resultMap id="BaseResultMap" type="com.kk.wx.cp.entity.Atd_rule">
+        <!--
+          WARNING - @mbggenerated
+        -->
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="attendance_name" property="attendanceName" jdbcType="VARCHAR"/>
+        <result column="attendance_week" property="attendanceWeek" jdbcType="VARCHAR"/>
+        <result column="attendance_time_begin" property="attendanceTimeBegin" jdbcType="TIMESTAMP"/>
+        <result column="attendance_time_end" property="attendanceTimeEnd" jdbcType="TIMESTAMP"/>
+        <result column="attendance_address_jing" property="attendanceAddressJing" jdbcType="VARCHAR"/>
+        <result column="attendance_address_wei" property="attendanceAddressWei" jdbcType="VARCHAR"/>
+        <result column="attendance_Administrators" property="attendanceAdministrators" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="create_by" property="createBy" jdbcType="VARCHAR"/>
+        <result column="depart_id" property="departId" jdbcType="VARCHAR"/>
+    </resultMap>
+</mapper>

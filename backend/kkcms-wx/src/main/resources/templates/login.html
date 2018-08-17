@@ -1,0 +1,125 @@
+<!DOCTYPE HTML>
+<!--suppress ThymeleafVariablesResolveInspection-->
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>二次验证</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+    <link rel="stylesheet" type="text/css"  th:href="${urls.getForLookupPath('/css/weixin.min.css')}" />
+    <style>
+
+        .no-data {
+            margin-top: 50px;
+            text-align: center;
+            display: none;
+        }
+
+        .no-data.show{
+            display: block;
+        }
+
+        .error-msg {
+            text-align: center;
+            display: none;
+            color: red;
+        }
+
+        .error-msg.show {
+            display: block;
+        }
+
+        .weui-toast {
+            height: 7.6em;
+            line-height: 7.6em;
+            width: 12em;
+            margin-left: -6em;
+        }
+
+        .sb-title {
+            font-size: 20px;
+        }
+
+        .describe {
+            padding: 10px 15px;
+            line-height: 1.5;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+<div class="weui-cells__title sb-title">二次验证</div>
+
+
+
+<div th:classappend="${#lists.isEmpty(resultList)} ? 'show'" class="no-data">
+    <p style="margin-bottom: 50px">系统未找到你注册的企业，您可以点击请点击[手动填写]进行企业验证！</p>
+    <div class="weui-btn-area">
+        <a href="/wx/bind" class="weui-btn weui-btn weui-btn_default">手动填写</a>
+    </div>
+</div>
+
+<div th:unless="${#lists.isEmpty(resultList)}" class="my-company-list">
+    <form action="/wx/user/bindAction" method="post" onsubmit="return check();">
+        <div class="weui-cells weui-cells_checkbox" th:each="company, iterStat:${resultList}">
+            <input type="hidden" name="sflx" th:value="${company.sflx}"/>
+            <input type="hidden" name="nsrsbh" th:value="${company.nsrsbh}"/>
+            <label class="weui-cell weui-check__label"  th:attr="for=${iterStat.index}">
+                <div class="weui-cell__hd">
+                    <input type="checkbox" class="weui-check" name="componybox" th:value="${company.nsrsbh+'-'+company.sflx}"  th:id="${iterStat.index}" />
+                    <i class="weui-icon-checked"></i>
+                </div>
+                <div class="weui-cell__bd">
+                    <p th:text="${company.nsrmc}"></p>
+                    <p th:text="${company.sflxmc}"></p>
+                </div>
+            </label>
+        </div>
+
+        <p class="describe">
+            说明：请选择您管理的单位，若列表中没有您管理的单位，请点击“手动填写”进行验证。若您还有其他未列出的荷塘区纳税人单位任职可以在确认后到企业绑定功能中补充。
+        </p>
+
+        <div class="weui-btn-area">
+            <button href="javascript:;" type="submit" class="weui-btn weui-btn weui-btn_primary">确定</button>
+            <a href="/wx/bind" class="weui-btn weui-btn weui-btn_default">手动填写</a>
+        </div>
+    </form>
+</div>
+
+<div class="error-msg" th:classappend="${errorMsg != null} ? 'show'" th:text="${errorMsg}"></div>
+
+<div id="toast" style="opacity: 0; display: none;">
+    <div class="weui-mask_transparent"></div>
+    <div class="weui-toast">
+        <p class="weui-toast__content"></p>
+    </div>
+</div>
+</body>
+
+<script type="text/javascript" th:src="${urls.getForLookupPath('/js/zepto.min.js')}"></script>
+
+<script type="text/javascript">
+    var $toast = $("#toast");
+    var $toastContent = $toast.find(".weui-toast__content");
+
+
+    function info(msg) {
+        $toastContent.html(msg);
+        $toast.fadeIn(100);
+        setTimeout(function(){
+            $toast.fadeOut(100);
+        }, 1500);
+    }
+
+    function check() {
+        var $componybox = $("input[name='componybox']:checked");
+
+        if($componybox.length === 0) {
+            info("请选择需要的企业！");
+            return false;
+        }
+
+        return true;
+    }
+</script>
+</html>

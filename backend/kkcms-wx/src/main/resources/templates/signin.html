@@ -1,0 +1,152 @@
+<!doctype html>
+<!--suppress ThymeleafVariablesResolveInspection-->
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>签到</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link href='https://fonts.googleapis.com/css?family=Playfair+Display:700,900|Fira+Sans:400,400italic'
+          rel='stylesheet' type='text/css'/>
+    <link th:href="@{/css/default.css}" rel='stylesheet' type='text/css'/>
+    <link th:href="@{/css/sweetalert2.css}" rel='stylesheet' type='text/css'/>
+    <script src="https://cdn.bootcss.com/jquery/3.3.0/jquery.js"></script>
+    <link href="https://cdn.bootcss.com/bootstrap/4.1.1/css/bootstrap.css" rel="stylesheet"/>
+    <!-- 引入 WeUI -->
+    <link rel="stylesheet" href="http://res.wx.qq.com/open/libs/weui/0.4.0/weui.min.css"/>
+    <script type="text/javascript" th:src="@{/js/sweetalert2.js}"></script>
+    <script src="http://rescdn.qqmail.com/node/ww/wwopenmng/js/sso/wwLogin-1.0.0.js"></script>
+
+</head>
+<body onload="start()">
+<div>
+    <!-- 单页应用 -->
+    <div style="height:100%">
+        <div class="center">
+            <p id="center_pst"></p>
+            <p id="center_pnd"></p>
+            <div class="weui-cells">
+                <div th:each="rules:${ruleLists}">
+                    <div th:each="rule,ruleStat:${rules}" class="card-containner">
+                        <div class="container">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 th:text="${rule.attendanceName}"></h4>
+                                    <!--<h4 class="card-title" th:text="'签到任务'+${ruleStat.index+1}"></h4>-->
+                                    <p class="card-text" th:text="'打卡日期范围：'+${rule.attendanceWeek}"></p>
+                                    <p class="card-text"
+                                       th:text="'打卡开始时间：'+${#dates.format(rule.attendanceTimeBegin, 'yyyy-MM-dd')}"></p>
+                                    <p class="card-text"
+                                       th:text="'打卡结束时间：'+${#dates.format(rule.attendanceTimeEnd, 'yyyy-MM-dd')}"></p>
+                                    <p class="card-text" th:text="'您现在所在的位置：'+${rule.attendanceAddressWei}"></p>
+                                    <p class="card-text" th:text="'指定打卡位置：'+${rule.attendanceAddressJing}"></p>
+                                    <div class="page button js_show">
+                                        <button class="weui-btn weui-btn_plain-primary"
+                                                th:onclick="'javascript:qiandao(\''+${rule.id}+'\',\''+${rule.attendanceAddressWei}+'\')'">打卡
+                                        </button>
+                                        <button class="weui-btn weui-btn_plain-primary weui-btn_plain-disabled">
+                                            其他方式打卡(暂未实现)
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+</div>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+
+    function start() {
+        var today = new Date();
+//        var year = today.getFullYear();
+        var month = today.getMonth() + 1;
+        var day = today.getDate();
+        var hours = today.getHours();
+        var week = today.getDay();
+        var minutes = today.getMinutes();
+        var seconds = today.getSeconds();
+        //如果是单位数字，前面补0
+        month = month < 10 ? "0" + month : month;
+        day = day < 10 ? "0" + day : day;
+        hours = hours < 10 ? "0" + hours : hours;
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+        switch (week) {
+            case 0:
+                week = "星期一";
+                break;
+            case 1:
+                week = "星期二";
+                break;
+            case 2:
+                week = "星期三";
+                break;
+            case 3:
+                week = "星期四";
+                break;
+            case 4:
+                week = "星期五";
+                break;
+            case 5:
+                week = "星期六";
+                break;
+            default:
+                week = "星期日";
+                break;
+
+        }
+        //时间信息连成字符串
+        var str = month + "月" + day + "日 " + week;
+        var str_time = hours + ":" + minutes + ":" + seconds;
+        //获取id=result的内容
+        var obj = document.getElementById("center_pst");
+        var obj_time = document.getElementById("center_pnd");
+        obj_time.innerHTML = str_time;
+        obj.innerHTML = str;
+        //延时器
+        window.setTimeout("start()", 1000);
+    }
+    function qiandao(taskId,address) {
+        $.ajax({
+            type: "POST",
+            data: {ruleId: taskId,address:address},
+            url: "/wx/user/qiandao",
+            success: function (data) {
+                if (data.code == 0) {
+                    swal({
+                        title: "签到完成！",
+                        text: "2秒后自动关闭。",
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+                } else {
+                    swal({
+                        title: "签到失败！",
+                        text: data.msg,
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+                }
+            },
+            error: function (data) {
+                swal({
+                    title: "签到失败！",
+                    text: data.msg,
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+            }
+        });
+    }
+    /*]]>*/
+</script>
+</body>
+</html>
