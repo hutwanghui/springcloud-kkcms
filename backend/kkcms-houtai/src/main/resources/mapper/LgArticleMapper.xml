@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kk.modules.article.dao.LgArticleMapper" >
+  <resultMap id="BaseResultMap" type="com.kk.modules.article.entity.LgArticle" >
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <id column="url_object_id" property="urlObjectId" jdbcType="VARCHAR" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="salary" property="salary" jdbcType="VARCHAR" />
+    <result column="job_city" property="jobCity" jdbcType="VARCHAR" />
+    <result column="work_years" property="workYears" jdbcType="VARCHAR" />
+    <result column="degree_need" property="degreeNeed" jdbcType="VARCHAR" />
+    <result column="job_type" property="jobType" jdbcType="VARCHAR" />
+    <result column="publish_time" property="publishTime" jdbcType="VARCHAR" />
+    <result column="tags" property="tags" jdbcType="VARCHAR" />
+    <result column="job_advantage" property="jobAdvantage" jdbcType="VARCHAR" />
+    <result column="job_addr" property="jobAddr" jdbcType="VARCHAR" />
+    <result column="company_url" property="companyUrl" jdbcType="VARCHAR" />
+    <result column="company_name" property="companyName" jdbcType="VARCHAR" />
+    <result column="crawl_time" property="crawlTime" jdbcType="TIMESTAMP" />
+    <result column="crawl_update_time" property="crawlUpdateTime" jdbcType="TIMESTAMP" />
+    <result column="job_desc" property="jobDesc" jdbcType="LONGVARCHAR" />
+  </resultMap>
+</mapper>

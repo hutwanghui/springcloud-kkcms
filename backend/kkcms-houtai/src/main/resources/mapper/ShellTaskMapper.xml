@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kk.modules.hadoop.dao.ShellTaskMapper" >
+  <resultMap id="BaseResultMap" type="com.kk.modules.hadoop.entity.ShellTask" >
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="shell_name" property="shellName" jdbcType="VARCHAR" />
+    <result column="shell_path" property="shellPath" jdbcType="VARCHAR" />
+    <result column="shell_desc" property="shellDesc" jdbcType="VARCHAR" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+</mapper>

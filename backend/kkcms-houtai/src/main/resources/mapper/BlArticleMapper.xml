@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kk.modules.article.dao.BlArticleMapper" >
+  <resultMap id="BaseResultMap" type="com.kk.modules.article.entity.BlArticle" >
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="DATE" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <result column="url_object_id" property="urlObjectId" jdbcType="VARCHAR" />
+    <result column="from_image_url" property="fromImageUrl" jdbcType="VARCHAR" />
+    <result column="from_image_path" property="fromImagePath" jdbcType="VARCHAR" />
+    <result column="praise_num" property="praiseNum" jdbcType="INTEGER" />
+    <result column="collect_num" property="collectNum" jdbcType="INTEGER" />
+    <result column="comment_num" property="commentNum" jdbcType="INTEGER" />
+    <result column="tags" property="tags" jdbcType="VARCHAR" />
+  </resultMap>
+</mapper>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kk.modules.article.dao.JjArticleMapper" >
+  <resultMap id="BaseResultMap" type="com.kk.modules.article.entity.JjArticle" >
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="summaryInfo" property="summaryinfo" jdbcType="VARCHAR" />
+    <result column="updatedAt" property="updatedat" jdbcType="VARCHAR" />
+    <result column="tags" property="tags" jdbcType="VARCHAR" />
+    <result column="collectionCount" property="collectioncount" jdbcType="INTEGER" />
+    <result column="commentsCount" property="commentscount" jdbcType="INTEGER" />
+    <result column="viewsCount" property="viewscount" jdbcType="INTEGER" />
+    <result column="originalUrl" property="originalurl" jdbcType="VARCHAR" />
+    <result column="screenshot" property="screenshot" jdbcType="VARCHAR" />
+  </resultMap>
+</mapper>
