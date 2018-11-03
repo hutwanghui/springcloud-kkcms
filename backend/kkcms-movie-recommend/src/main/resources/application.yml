@@ -1,0 +1,56 @@
+server:
+  port: 7777
+  tomcat:
+    uri-encoding: utf-8
+spring:
+  application:
+    name: kkcms-movie-recommend
+  session:
+    store-type: none
+  data:
+    neo4j:
+      password: wh970121
+      username: neo4j
+      uri: http://localhost:7474
+  datasource:
+    name: kkcms
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/kkcms?useUnicode=true&characterEncoding=UTF8
+    username: root
+    password: wh970121
+  redis:
+    password: wh970121
+  kafka:
+    #指定kafka 代理地址，可以多个
+    bootstrap-servers: 192.168.99.100:9092
+    #bootstrap-servers: 118.89.18.32:9092
+    template:
+      default-topic: movie
+    producer:
+      bootstrap-servers: 192.168.99.100:9092
+      #bootstrap-servers: 118.89.18.32:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      # 每次批量发送消息的数量
+      batch-size: 16384
+      # 缓存大小
+      buffer-memory: 33554432
+    consumer:
+      group-id: test-consumer-group
+      auto-offset-reset: earliest
+      enable-auto-commit: true
+      auto-commit-interval: 100
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8961/eureka/
+
+security:
+  basic:
+    enabled: false
+  user:
+    name: admin
+    password: admin123456
