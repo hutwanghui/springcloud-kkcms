@@ -15,11 +15,12 @@
         <module>kkcms-gate</module>
         <module>kkcms-im</module>
         <module>kkcms-api</module>
-       <!-- <module>kkcms-app</module>-->
+        <!-- <module>kkcms-app</module>-->
         <module>kkcms-zuul</module>
         <module>kkcms-wx</module>
         <module>kkcms-houtai</module>
         <module>kkcms-hadoop</module>
+        <module>kkcms-movie-recommend</module>
     </modules>
     <properties>
         <spring-boot-version>1.5.9.RELEASE</spring-boot-version>
@@ -33,7 +34,6 @@
     </properties>
     <!--替我们管理版本信息，保证兼容-->
     <dependencyManagement>
-
         <dependencies>
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
@@ -49,6 +49,7 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+
         </dependencies>
     </dependencyManagement>
     <build>
