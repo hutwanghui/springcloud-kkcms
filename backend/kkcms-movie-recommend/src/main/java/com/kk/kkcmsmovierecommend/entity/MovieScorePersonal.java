@@ -22,4 +22,7 @@ public class MovieScorePersonal extends BaseEntity {
     private int userId;
     private String movieId;
     private int score;
+    private boolean favorite;
+    private boolean rated;
+    private boolean watchlist;
 }
