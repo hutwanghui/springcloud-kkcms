@@ -85,7 +85,7 @@ public class SessionAccessFilter extends ZuulFilter {
             passZullPorxy(ctx);
             return null;
         }
-        if (StringUtils.contains(request.getRequestURL().toString(), "kkcms-houtai/hadoop/uploadShell")) {
+        if (StringUtils.contains(request.getRequestURL().toString(), "kkcms-movie-recommend/movie/checkIfFavorite")) {
             passZullPorxy(ctx);
             return null;
         }

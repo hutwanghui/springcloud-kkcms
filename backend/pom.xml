@@ -21,6 +21,7 @@
         <module>kkcms-houtai</module>
         <module>kkcms-hadoop</module>
         <module>kkcms-movie-recommend</module>
+        <module>kkcms-movie-jsoup</module>
     </modules>
     <properties>
         <spring-boot-version>1.5.9.RELEASE</spring-boot-version>

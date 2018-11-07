@@ -36,6 +36,7 @@ public class UserRelationship extends BaseEntity {
     @JsonProperty("好友")
     private Set<UserRelationship> userRelationships;
 
+
     public void makeFriendWith(UserRelationship friend) {
         if (userRelationships == null) {
             userRelationships = new HashSet<>();
@@ -52,6 +53,17 @@ public class UserRelationship extends BaseEntity {
         }
     }
 
+    public void makeScoreWithExist(MovieScorePersonal movieScorePersonal) {
+        if (movieScorePersonals.stream().anyMatch((e) -> e.getMovieId().equals(movieScorePersonal.getMovieId()))) {
+            System.out.println("123---------------");
+            movieScorePersonals.stream().filter(e -> e.getMovieId().equals(movieScorePersonal.getMovieId()))
+                    .forEach(r -> r.setScore(movieScorePersonal.getScore()));
+        } else {
+            System.out.println("456------------");
+            movieScorePersonals.add(movieScorePersonal);
+        }
+    }
+
     @Override
     public String toString() {
         return this.userId + " : " + this.username + " 【好友】 => "
@@ -61,6 +73,6 @@ public class UserRelationship extends BaseEntity {
                 + " 【评价过的电影】 => "
                 + Optional.ofNullable(this.movieScorePersonals).orElse(
                 Collections.emptySet()).stream().map(
-                person -> person.getName()).collect(Collectors.toList());
+                person -> person.getUserId() + ":" + person.getMovieId() + ":" + person.getScore()).collect(Collectors.toList());
     }
 }

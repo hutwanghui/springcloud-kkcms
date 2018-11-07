@@ -28,7 +28,7 @@ public class KafkaProducer {
 
     private Gson gson = new GsonBuilder().create();
 
-    public void send(int userId, int score, String movieId) {
+    public void send(String userId, int score, String movieId) {
         MovieScorePersonal message = MovieScorePersonal.builder().userId(userId).score(score)
                 .movieId(movieId).build();
         log.info("+++++++++++++++++++++  message = {}", gson.toJson(message));

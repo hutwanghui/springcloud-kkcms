@@ -37,16 +37,17 @@ public class ApiController {
     }
 
     @GetMapping(value = "/jwt")
-    public Object getCurrentJwt(Authentication authentication, HttpServletRequest httpServletRequest) throws UnsupportedEncodingException {
+    public String getCurrentJwt(Authentication authentication, HttpServletRequest httpServletRequest) throws UnsupportedEncodingException {
         String header = httpServletRequest.getHeader("Authorization");
+        System.out.println("==========" + header);
         String token = StringUtils.substringAfter(header, "beraer ");
         //解析jwt，并验证其中的密钥，这个密钥是在jwt配置中指定好的
         //签名和验证前面的时候分别是springframework.security.oauth2.provider和jwtio，而spring默认是用UTF-8签名的，所以验证的时候也要用UTF-8格式
+        System.out.println("----------" + token);
         Claims claims = Jwts.parser().setSigningKey("hutwanghui".getBytes("UTF-8")).parseClaimsJws(token).getBody();
         System.out.print("\n获取令牌信息：" + claims.get("user_name"));
-        return authentication;
+        return claims.get("user_name").toString();
     }
-
 
 
 }

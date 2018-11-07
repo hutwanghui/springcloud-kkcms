@@ -12,23 +12,17 @@ spring:
       password: wh970121
       username: neo4j
       uri: http://localhost:7474
-  datasource:
-    name: kkcms
-    driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/kkcms?useUnicode=true&characterEncoding=UTF8
-    username: root
-    password: wh970121
   redis:
     password: wh970121
   kafka:
     #指定kafka 代理地址，可以多个
-    bootstrap-servers: 192.168.99.100:9092
-    #bootstrap-servers: 118.89.18.32:9092
+    #    bootstrap-servers: 192.168.99.100:9092
+    bootstrap-servers: 118.89.18.32:9092
     template:
       default-topic: movie
     producer:
-      bootstrap-servers: 192.168.99.100:9092
-      #bootstrap-servers: 118.89.18.32:9092
+      #      bootstrap-servers: 192.168.99.100:9092
+      bootstrap-servers: 118.89.18.32:9092
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
       # 每次批量发送消息的数量
@@ -42,6 +36,58 @@ spring:
       auto-commit-interval: 100
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      #      bootstrap-servers: 192.168.99.100:9092
+      bootstrap-servers: 118.89.18.32:9092
+
+  #    hibernate:
+#      ddl-auto: create-drop
+  datasource:
+    druid:
+      url: jdbc:mysql://localhost:3306/kkcms?useUnicode=true&characterEncoding=utf-8
+      username: root
+      password: wh970121
+      initial-size: 5
+      max-active: 20
+      min-idle: 5
+      max-wait: 60000
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      validation-query: select 'x'
+      test-on-borrow: false
+      test-on-return: false
+      test-while-idle: true
+      max-pool-prepared-statement-per-connection-size: 100
+      filters: stat,wall
+      web-stat-filter:
+        enabled: true
+        url-pattern: /*
+        session-stat-enable: true
+        session-stat-max-count: 1000
+        profile-enable: true
+      stat-view-servlet:
+        enabled: true
+        url-pattern: /druid/*
+        reset-enable: true
+        login-username: druid
+        login-password: druid123
+      filter:
+        wall:
+          config:
+            multi-statement-allow: true
+          enabled: true
+          db-type: mysql
+        stat:
+          slow-sql-millis: 5000
+          log-slow-sql: true
+          db-type: mysql
+      aop-patterns: org.hut.service.*
+      driver-class-name: com.mysql.jdbc.Driver
+
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
 
 eureka:
   client:

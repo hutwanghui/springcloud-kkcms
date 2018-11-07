@@ -60,6 +60,9 @@ zuul:
 #      url: http://www.hutwanghui.club:8966/
       url: http://localhost:8966/
       serviceId: kkcms-wx
+    kkcms-movie-recommend:
+      path: /kkcms-movie-recommend
+      serviceId: kkcms-movie-recommend
   sensitive-headers:
   add-proxy-headers: true
 
