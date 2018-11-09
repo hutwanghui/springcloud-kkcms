@@ -96,6 +96,7 @@ public class SessionAccessFilter extends ZuulFilter {
             return null;
         }
         String auth = request.getHeader("Authorization");
+        System.out.println("~~~~~~~~~~~~~~"+auth);
         if (auth.split(" ")[0].equals("Basic")) {
             passZullPorxy(ctx);
             return null;

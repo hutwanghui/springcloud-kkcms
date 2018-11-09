@@ -10,6 +10,10 @@ spring:
     name: kkcms-zuul
   session:
     store-type: redis
+  datasource:
+    username: root
+    password: wh970121
+    url: jdbc:mysql://localhost:3306/kkcms?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8
   redis:
       host: localhost
       database: 8
@@ -62,6 +66,7 @@ zuul:
       serviceId: kkcms-wx
     kkcms-movie-recommend:
       path: /kkcms-movie-recommend
+      utl: http://localhost:7777/
       serviceId: kkcms-movie-recommend
   sensitive-headers:
   add-proxy-headers: true

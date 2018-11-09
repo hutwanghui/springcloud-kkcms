@@ -1,9 +1,6 @@
 package com.kk.kkcmsmovierecommend.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
@@ -18,11 +15,11 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Entity
+@ToString
 @Table(name = "TMDBMovie")
 public class TMDBMovie {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private Integer vote_count;
     private String video;
@@ -36,5 +33,6 @@ public class TMDBMovie {
     private String adult;
     private String overview;
     private String release_date;
+
 
 }

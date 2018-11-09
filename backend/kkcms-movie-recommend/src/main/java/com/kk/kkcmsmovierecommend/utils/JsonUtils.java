@@ -1,4 +1,4 @@
-package org.hut.kkcmsmoviejsoup.utils;
+package com.kk.kkcmsmovierecommend.utils;
 
 import com.alibaba.fastjson.JSONObject;
 import org.jsoup.Jsoup;
@@ -19,7 +19,7 @@ public class JsonUtils {
         //设置代理ip 可以使用香港http代理
         System.getProperties().setProperty("http.proxyHost", "127.0.0.1");
         System.getProperties().setProperty("http.proxyPort", "1080");
-        Document doc = Jsoup.connect(" https://api.themoviedb.org/3/movie/upcoming?api_key=c2f8fe5b024fded37dbb4202e5657ebd&language=zh-cn&page=" + pageSize)
+        Document doc = Jsoup.connect(" https://api.themoviedb.org/3/movie/popular?api_key=c2f8fe5b024fded37dbb4202e5657ebd&language=zh-cn&page=" + pageSize)
                 .headers(getJsonValueMap())
                 .ignoreContentType(true)
                 .get();

@@ -43,9 +43,14 @@ public class CustomOauthAuthenticationSuccessHandler implements AuthenticationSu
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
         logger.info("移动端认证登陆成功，用户是：" + authentication.getName());
         String header = httpServletRequest.getHeader("Authorization");
+        String header1 = httpServletRequest.getHeader("authorization");
+        System.out.println("=======" + header + "=========");
+        System.out.println("=======" + header1 + "=========");
         if (header == null || !header.startsWith("Basic ")) {
-
+            System.out.println("=======" + header + "=========");
+            throw new UnapprovedClientAuthenticationException("header未携带Authorization");
         }
+        System.out.println("-------" + header + "-------");
         String[] tokens = extractAndDecodeHeader(header, httpServletRequest);
         assert tokens.length == 2;
         String clientId = tokens[0];
