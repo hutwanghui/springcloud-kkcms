@@ -9,14 +9,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.kk.common.util.http.R;
 import com.kk.kkcmsmovierecommend.Service.KafkaProducer;
-import com.kk.kkcmsmovierecommend.entity.MovieScorePersonal;
-import com.kk.kkcmsmovierecommend.entity.RecommendResult;
-import com.kk.kkcmsmovierecommend.entity.TMDBMovie;
-import com.kk.kkcmsmovierecommend.entity.UserRelationship;
-import com.kk.kkcmsmovierecommend.mapper.MovieScorePersonalMapper;
-import com.kk.kkcmsmovierecommend.mapper.RecommendResultMapper;
-import com.kk.kkcmsmovierecommend.mapper.TMDBMovieMapper;
-import com.kk.kkcmsmovierecommend.mapper.UserRelationshipMapper;
+import com.kk.kkcmsmovierecommend.entity.*;
+import com.kk.kkcmsmovierecommend.mapper.*;
 import com.kk.kkcmsmovierecommend.utils.JsonUtils;
 import com.netflix.discovery.converters.Auto;
 import io.netty.util.CharsetUtil;
@@ -27,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -136,7 +131,8 @@ public class ApiController {
     @RequestMapping("movie/favorite/get")
     public R getFavoriteMovies(@RequestParam("username") String username) {
         UserRelationship userRelationship = userRelationshipMapper.findByUsername(username);
-        Set<MovieScorePersonal> result = userRelationship
+        Set<TMDBMovie> results = new HashSet<>();
+        userRelationship
                 .getMovieScorePersonals()
                 .stream()
                 .filter(movieScorePersonal -> movieScorePersonal.isFavorite())
@@ -144,19 +140,20 @@ public class ApiController {
                     movieScorePersonal.setId(Long.valueOf(movieScorePersonal.getMovieId()));
                     return movieScorePersonal;
                 })
-                .collect(Collectors.toSet());
+                .forEach(m -> results.add(tmdbMovieMapper.findOne(Integer.valueOf(m.getMovieId()))));
 
         return R.ok()
                 .put("page", 1)
-                .put("results", result)
+                .put("results", results)
                 .put("total_pages", 1)
-                .put("total_results", result.size() > 0 ? result.size() : 5);
+                .put("total_results", results.size() > 0 ? results.size() : 5);
     }
 
     @RequestMapping("/movie/userRecommend/get")
     public R getUserRecommend(@RequestParam("username") String username) {
         UserRelationship userRelationship = userRelationshipMapper.findByUsername(username);
-        Set<MovieScorePersonal> result = userRelationship.getUserRelationships().stream()
+        Set<TMDBMovie> results = new HashSet<>();
+        userRelationship.getUserRelationships().stream()
                 .flatMap(m -> {
                     System.out.println("************" + m.getUserId());
                     Set<MovieScorePersonal> friendFavoriteAndScore = userRelationshipMapper.findByUserId(m.getUserId()).getMovieScorePersonals();
@@ -165,13 +162,13 @@ public class ApiController {
                     } else {
                         return null;
                     }
-                }).collect(Collectors.toSet());
+                }).forEach(m -> results.add(tmdbMovieMapper.findOne(Integer.valueOf(m.getMovieId()))));
 
         return R.ok()
                 .put("page", 1)
-                .put("results", result)
+                .put("results", results)
                 .put("total_pages", 1)
-                .put("total_results", result.size() > 0 ? result.size() : 5);
+                .put("total_results", results.size() > 0 ? results.size() : 5);
     }
 
     @RequestMapping("movie/modelRecommend/get")
@@ -179,15 +176,17 @@ public class ApiController {
         UserRelationship userRelationship = userRelationshipMapper.findByUsername(username);
         List<RecommendResult> recommendResultList = recommendResultMapper.findByUserId(Integer.valueOf(userRelationship.getUserId()));
         int randomInt = RandomUtil.randomInt(1, recommendResultList.size() / 2);
-        Set<RecommendResult> result = CollUtil.sub(recommendResultList, randomInt, randomInt + 10 > recommendResultList.size() ? recommendResultList.size() : randomInt + 10)
+        Set<TMDBMovie> results = new HashSet<>();
+        CollUtil.sub(recommendResultList, randomInt, randomInt + 10 > recommendResultList.size() ? recommendResultList.size() : randomInt + 10)
                 .stream()
-                .collect(Collectors.toSet());
+                .forEach(m -> results.add(tmdbMovieMapper.findOne(Integer.valueOf(m.getMovieId()))));
+
 
         return R.ok()
                 .put("page", 1)
-                .put("results", result)
+                .put("results", results)
                 .put("total_pages", 1)
-                .put("total_results", result.size() > 0 ? result.size() : 5);
+                .put("total_results", results.size() > 0 ? results.size() : 5);
     }
 
     @PostMapping("moviescore/save")
@@ -246,6 +245,41 @@ public class ApiController {
             for (TMDBMovie t : results) {
                 System.out.println(t.toString());
                 tmdbMovieMapper.save(t);
+            }
+        }
+    }
+
+    @Autowired
+    private TMDB1MovieMapper movieMapper;
+
+    @Autowired
+    private MovieTypeMapper movieTypeMapper;
+
+    @RequestMapping(value = "/movie/group")
+    public void group(@RequestParam("pagestart") Integer pageStart) throws IOException {
+        for (int i = 1; i < 1000; i++) {
+            List<TMDBMovie1> results = JSONObject.parseArray(JsonUtils.GetMovie(i), TMDBMovie1.class);
+            System.out.println(i + "爬取到电影数据：" + results.size());
+            for (TMDBMovie1 t : results) {
+                t.setMovieId(t.getId().intValue());
+                t.setId(null);
+                if (t != null) {
+                    System.out.println("==========" + t + "++++++++++");
+                    Integer[] integers = t.getGenre_ids();
+                    if (integers.length > 0) {
+                        for (Integer typeId : integers) {
+                            MovieType movieType = movieTypeMapper.findByTypeId(typeId);
+                            if (movieType != null) {
+                                movieType.collectionMovieType(t);
+                                movieTypeMapper.save(movieType);
+                            }
+
+                        }
+                    } else {
+                        System.out.println("==========未分类==========");
+                    }
+
+                }
             }
         }
     }
