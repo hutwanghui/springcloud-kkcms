@@ -15,9 +15,10 @@
 - 使用Swagger做了API接口文档生成
 
 
-- 测试阶段，项目前端未做（可以整合Angular做前后端分离的web项目也可以做App的后台服务），以下是各功能测试的截图
+- **基于spark的电影推荐系统前端页面演示**
+
+
 - **项目测试截图**
-- 
 服务注册中心
 ![服务注册中心](https://gitee.com/uploads/images/2018/0212/160802_19da651b_1689775.png "chrome_2018-02-12_16-07-41.png")
 使用GraphQL的查询
@@ -32,7 +33,5 @@
 ![登陆验证通过返回jwt令牌](https://gitee.com/uploads/images/2018/0212/155532_89de2aba_1689775.png "chrome_2018-02-12_15-50-36.png")
 jwt令牌的解析，后台已整合
 ![jwt令牌的解析](https://gitee.com/uploads/images/2018/0212/161035_18aa76e0_1689775.png "chrome_2018-02-12_16-09-55.png")
-本地构建记录
-![输入图片说明](https://gitee.com/uploads/images/2018/0212/172813_0721550d_1689775.png "idea64_2018-02-12_15-12-24.png")
 
 
