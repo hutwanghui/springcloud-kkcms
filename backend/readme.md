@@ -19,7 +19,6 @@
 
 
 - **项目测试截图**
-- 
 服务注册中心
 ![服务注册中心](https://gitee.com/uploads/images/2018/0212/160802_19da651b_1689775.png "chrome_2018-02-12_16-07-41.png")
 使用GraphQL的查询
