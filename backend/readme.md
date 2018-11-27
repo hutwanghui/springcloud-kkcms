@@ -17,8 +17,8 @@
 
 - **基于spark的电影推荐系统前端页面演示**
 ![电影浏览页](https://github.com/hutwanghui/springcloud-kkcms/blob/hutwanghui/backend/kkcms-movie-recommend/image/chrome_2018-11-11_23-35-33.png)
-![个性化推荐](https://github.com/hutwanghui/springcloud-kkcms/blob/hutwanghui/backend/kkcms-movie-recommend/image/个性化推荐.png)
-![电影详情页](https://github.com/hutwanghui/springcloud-kkcms/blob/hutwanghui/backend/kkcms-movie-recommend/image/电影详情页.png)
+![个性化推荐](https://github.com/hutwanghui/springcloud-kkcms/blob/hutwanghui/backend/kkcms-movie-recommend/image/个性化推荐.jpg)
+![电影详情页](https://github.com/hutwanghui/springcloud-kkcms/blob/hutwanghui/backend/kkcms-movie-recommend/image/电影详情页.jpg)
 ![电影知识图谱](https://github.com/hutwanghui/springcloud-kkcms/blob/hutwanghui/backend/kkcms-movie-recommend/image/graph.png)
 - **项目测试截图**
 服务注册中心
