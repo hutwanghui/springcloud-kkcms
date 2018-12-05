@@ -10,6 +10,8 @@ import org.springframework.cloud.netflix.hystrix.dashboard.EnableHystrixDashboar
 import org.springframework.cloud.netflix.turbine.EnableTurbine;
 import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
 import org.springframework.context.annotation.Bean;
+import org.springframework.session.data.redis.RedisFlushMode;
+import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 
 @SpringBootApplication
 @EnableEurekaClient
@@ -17,14 +19,9 @@ import org.springframework.context.annotation.Bean;
 @EnableZuulProxy
 @EnableHystrixDashboard
 @EnableTurbine
+@EnableRedisHttpSession(redisFlushMode = RedisFlushMode.IMMEDIATE)
 public class ZuulApplication {
 
-    /*	@Bean
-        @Primary
-        public RedisTemplateTokenStore redisTemplateTokenStore() {
-            RedisTemplateTokenStore redisTemplateTokenStore = new RedisTemplateTokenStore();
-            return redisTemplateTokenStore;
-        }*/
     @Bean
     public SessionAccessFilter sessionAccessFilter() {
         return new SessionAccessFilter();

@@ -12,6 +12,7 @@ import javax.imageio.ImageIO;
 /**
  * Created by msi- on 2018/2/5.
  * 移动端的验证码处理器
+ * imageValidateOauthCodeProcessor
  */
 @Component("imageValidateOauthCodeProcessor")
 public class ImageOauthCodeProcessor extends AbstractOauthValidateCodeProcessor<ImageCode> {

@@ -12,6 +12,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.ServletWebRequest;
 
+import javax.annotation.Resource;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -23,7 +24,7 @@ public class ValidateCodeRepository {
     String OAUTH_WEB_KEY_PREFIX = "OAUTH_WEB_KEY_FOR_CODE_";
 
     @Qualifier("redisTemplate")
-    @Autowired
+    @Resource
     private RedisTemplate<Object,Object> redis;
 
 

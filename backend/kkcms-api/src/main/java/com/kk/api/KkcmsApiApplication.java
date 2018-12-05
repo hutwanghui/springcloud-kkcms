@@ -7,11 +7,14 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.session.data.redis.RedisFlushMode;
+import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 
 @SpringBootApplication
 @EnableDiscoveryClient
 @MapperScan(basePackages = "com.kk.api.mapper")
 @EnableAsync
+@EnableRedisHttpSession(redisFlushMode = RedisFlushMode.IMMEDIATE)
 public class KkcmsApiApplication {
 /*    @Bean
     public MomentItemResolver momentItemResolver() {

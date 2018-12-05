@@ -1,0 +1,87 @@
+server:
+    session:
+      timeout: 600
+    port: 8962
+
+spring:
+  aop:
+    proxy-target-class: true
+  application:
+    name: kkcms-api
+  session:
+    store-type: redis
+  redis:
+      host: localhost
+      database: 9
+      pool:
+        max-active: 8
+        min-idle: 0
+        max-idle: 0
+        max-wait: -1
+      password: wh970121
+  datasource:
+        name: kkcms
+        url: jdbc:mysql://127.0.0.1:3306/kkcms?useUnicode=true&characterEncoding=UTF8&useSSL=true&allowMultiQueries=true
+        username: root
+        password: wh970121
+        driver-class-name: com.mysql.jdbc.Driver
+        druid:
+          initial-size: 1
+          max-active: 20
+          min-idle: 5
+          max-wait: 60000
+          time-between-eviction-runs-millis: 60000
+          min-evictable-idle-time-millis: 300000
+          validation-query: select 'x'
+          test-while-idle: true
+          test-on-borrow: false
+          test-on-return: false
+          poolPreparedStatements: true
+          max-pool-prepared-statement-per-connection-size: 100
+          filters: stat,wall,slf4j
+          web-stat-filter:
+            enabled: true
+            url-pattern: /*
+            session-stat-enable: true
+            session-stat-max-count: 1000
+            profile-enable: true
+          stat-view-servlet:
+            enabled: true
+            url-pattern: /druid/*
+            reset-enable: true
+            login-username: kkdruid
+            login-password: wh970121
+          aop-patterns: com.kk.api.service.*,com.kk.api.dao.*
+          filter:
+            wall:
+              config:
+                multi-statement-allow: true
+              enabled: true
+              db-type: mysql
+            stat:
+              slow-sql-millis: 5000
+              log-slow-sql: true
+              db-type: mysql
+
+
+eureka:
+    client:
+        serviceUrl:
+            defaultZone: http://localhost:8961/eureka/
+
+
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.kk.api.entity
+  configuration:
+    lazy-loading-enabled: true
+
+security:
+  basic:
+    enabled: false
+  user:
+    name: admin
+    password: admin123456
+
+

@@ -4,6 +4,7 @@ import com.kk.gate.exception.ValidateCodeException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.util.Map;
 
 /**
@@ -12,7 +13,7 @@ import java.util.Map;
 @Component
 public class ValidateOauthCodeProcessorHolder {
 
-    @Autowired
+    @Resource
     private Map<String, ValidateOauthCodeProcessor> validateOauthCodeProcessors;
 
     public ValidateOauthCodeProcessor findOauthValidateCodeProcessor(ValidateCodeType type) {
@@ -20,8 +21,11 @@ public class ValidateOauthCodeProcessorHolder {
     }
 
     public ValidateOauthCodeProcessor findOauthValidateCodeProcessor(String type) {
+        System.out.println("*********" + type + "------------");
         String name = type.toLowerCase() + ValidateOauthCodeProcessor.class.getSimpleName();
+        System.out.println("*********" + name + "------------");
         ValidateOauthCodeProcessor processor = validateOauthCodeProcessors.get(name);
+        System.out.println("*********" + processor.toString());
         if (processor == null) {
             throw new ValidateCodeException("验证码处理器" + name + "不存在");
         }

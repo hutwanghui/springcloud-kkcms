@@ -7,6 +7,7 @@ import com.kk.gate.validate.code.ValidateCodeGeneratorImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
@@ -20,7 +21,7 @@ import java.util.Random;
 @Service(value = "imageValidateCodeGenerator")
 public class ImageCodeGeneratorImpl extends ValidateCodeGeneratorImpl implements ImageCodeGenerator {
 
-    @Autowired
+    @Resource
     private ValidateProperties validateProperties;
     //使用到Algerian字体，系统里没有的话需要安装字体，字体只显示大写，去掉了1,0,i,o几个容易混淆的字符
     public static final String VERIFY_CODES = "23456789ABCDEFGHJKLMNPQRSTUVWXYZ";
@@ -45,8 +46,11 @@ public class ImageCodeGeneratorImpl extends ValidateCodeGeneratorImpl implements
         return verifyCode.toString();
     }
 
+    @Override
     public ImageCode generateValidateCode() throws IOException {
         String code = generateVerifyCode(validateProperties.getImageCode().getSize());
+        System.out.println("&&&&&&&&&&随机生成的验证码是:" + code + "&&&&&&&&&&&&&");
+        System.out.println("长度：" + validateProperties.getImageCode().getWidth() + "高度：" + validateProperties.getImageCode().getHeight());
         BufferedImage bufferedImage = outputImage(validateProperties.getImageCode().getWidth(), validateProperties.getImageCode().getHeight(), code);
         return new ImageCode(bufferedImage, code, validateProperties.getImageCode().getExpireIn());
     }
@@ -59,6 +63,7 @@ public class ImageCodeGeneratorImpl extends ValidateCodeGeneratorImpl implements
      * @param code
      * @throws IOException
      */
+    @Override
     public BufferedImage outputImage(int w, int h, String code) throws IOException {
         int verifySize = code.length();
         BufferedImage image = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
@@ -108,18 +113,22 @@ public class ImageCodeGeneratorImpl extends ValidateCodeGeneratorImpl implements
 
         g2.setColor(getRandColor(100, 160));
         int fontSize = h - 4;
-        Font font = new Font("Algerian", Font.ITALIC, fontSize);
-        g2.setFont(font);
+        System.out.println("111111111111111111111111");
+        g2.setFont(new Font("Times New Roman", Font.PLAIN, 18));
         char[] chars = code.toCharArray();
         for (int i = 0; i < verifySize; i++) {
             AffineTransform affine = new AffineTransform();
             affine.setToRotation(Math.PI / 4 * rand.nextDouble() * (rand.nextBoolean() ? 1 : -1), (w / verifySize) * i + fontSize / 2, h / 2);
             g2.setTransform(affine);
+            System.out.println("1:" + chars);
+            System.out.println("2:" + verifySize);
+            System.out.println("3:" + fontSize);
             g2.drawChars(chars, i, 1, ((w - 10) / verifySize) * i + 5, h / 2 + fontSize / 2 - 10);
         }
 
         g2.dispose();
-        /*ImageIO.write(image, "jpg", os);*/
+//        ImageIO.write(image, "jpg", os);
+        System.out.println("=========" + image.toString());
         return image;
     }
 

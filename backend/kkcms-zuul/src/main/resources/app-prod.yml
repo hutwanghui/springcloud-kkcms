@@ -1,0 +1,100 @@
+server:
+    port: 8960
+    session:
+      timeout: 600
+
+spring:
+  aop:
+      proxy-target-class: true
+  application:
+    name: kkcms-zuul
+  session:
+    store-type: redis
+  datasource:
+    username: root
+    password: wh970121
+    url: jdbc:mysql://192.168.0.107:53306/kkcms?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8
+  redis:
+      host: localhost
+      database: 8
+      pool:
+        max-active: 8
+        min-idle: 0
+        max-idle: 0
+        max-wait: -1
+      password: wh970121
+
+eureka:
+    client:
+        serviceUrl:
+            defaultZone: http://localhost:8961/eureka/
+
+zuul:
+  host:
+    max-total-connections: 500 # 每个服务的http客户端连接池最大连接，默认值是200
+    max-per-route-connections: 50 # 每个route可用的最大连接数，默认值是20
+  routes:
+    kkcms-user:
+      path: /kkcms-user/**
+#      url: http://www.hutwanghui.club:8964/
+      url: http://localhost:8964/
+      serviceId: kkcms-user
+    kkcms-api:
+      path: /kkcms-api/**
+#      url: http://www.hutwanghui.club:8962/
+      url: http://localhost:8962/
+      serviceId: kkcms-api
+    kkcms-gate:
+      path: /kkcms-gate/**
+#      url: http://www.hutwanghui.club:8965/
+      url: http://localhost:8965/
+      serviceId: kkcms-gate
+    kkcms-app:
+      path: /kkcms-app/**
+#      url: http://www.hutwanghui.club:8963/
+      url: http://localhost:8963/
+      serviceId: kkcms-app
+    kkcms-houtai:
+      path: /kkcms-houtai/**
+#      url: http://www.hutwanghui.club:8967/
+      url: http://localhost:8967/
+      serviceId: kkcms-houtai
+    kkcms-wx:
+      path: /kkcms-wx/**
+#      url: http://www.hutwanghui.club:8966/
+      url: http://localhost:8966/
+      serviceId: kkcms-wx
+    kkcms-movie-recommend:
+      path: /kkcms-movie-recommend
+      utl: http://localhost:7777/
+      serviceId: kkcms-movie-recommend
+  sensitive-headers:
+  add-proxy-headers: true
+
+security:
+  basic:
+    enabled: false
+  user:
+    name: admin
+    password: admin123456
+
+
+#security:
+#  oauth2:
+#    client:
+#      client-id: kkcms-client
+#      client-secret: kkcms-secret
+#      access-token-uri: http://localhost:8080/uaa/oauth/token
+#      user-authorization-uri: http://localhost:8080/uaa/oauth/authorize
+#    resource:
+#      user-info-uri: http://localhost:8080/uaa/user
+#      prefer-token-info: false
+#    token:
+#      store:
+#        type: jwt
+
+turbine:
+  aggregator:
+    clusterConfig: default  #turbine监控的服务名称，可以多个
+  appConfig: kkcms-gate  #turbine监控的服务，可以有多个
+  clusterNameExpression: new String("default")

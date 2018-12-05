@@ -60,7 +60,7 @@ public class ValidateController {
     @ApiOperation(value = "多种验证码生成")
     public void createOauthCode(HttpServletRequest request, HttpServletResponse response, @PathVariable String type)
             throws Exception {
-        System.out.print("移动端" + "接收前端获取验证码类型：" + type);
+        System.out.println("移动端" + "接收前端获取验证码类型：" + type);
         validateOauthCodeProcessorHolder.findOauthValidateCodeProcessor(type).create(new ServletWebRequest(request, response));
     }
 }

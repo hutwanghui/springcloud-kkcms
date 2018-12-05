@@ -13,6 +13,7 @@ import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
 
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -22,7 +23,7 @@ public class SessionAccessFilter extends ZuulFilter {
     private final Logger log = LoggerFactory.getLogger(SessionAccessFilter.class);
 
 
-    @Autowired
+    @Resource
     private TokenStore redisTokenStore;
 
     /**
@@ -96,7 +97,7 @@ public class SessionAccessFilter extends ZuulFilter {
             return null;
         }
         String auth = request.getHeader("Authorization");
-        System.out.println("~~~~~~~~~~~~~~"+auth);
+        System.out.println("~~~~~~~~~~~~~~" + auth);
         if (auth.split(" ")[0].equals("Basic")) {
             passZullPorxy(ctx);
             return null;

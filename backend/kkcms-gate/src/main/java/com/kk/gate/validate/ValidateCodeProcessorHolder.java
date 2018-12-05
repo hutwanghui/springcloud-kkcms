@@ -1,6 +1,3 @@
-/**
- *
- */
 package com.kk.gate.validate;
 
 import java.util.Map;
@@ -24,6 +21,7 @@ public class ValidateCodeProcessorHolder {
 
     public ValidateCodeProcessor findValidateCodeProcessor(String type) {
         String name = type.toLowerCase() + ValidateCodeProcessor.class.getSimpleName();
+        System.out.println("^^^^^^^^^^^^"+name+"^^^^^^^^^^type");
         ValidateCodeProcessor processor = validateCodeProcessors.get(name);
         if (processor == null) {
             throw new ValidateCodeException("验证码处理器" + name + "不存在");

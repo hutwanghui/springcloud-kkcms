@@ -25,15 +25,18 @@ public class ValidateOauthCodeRepository {
 
     @Qualifier("redisTemplate")
     @Autowired
-    private RedisTemplate<Object,Object> redis;
+    private RedisTemplate<Object, Object> redis;
 
 
     public void save(ServletWebRequest request, ValidateCode code, ValidateCodeType type) {
+        System.out.println("xxxxxxxxxxxxxxx");
         if (code instanceof ImageCode) {
             ValidateCode validateCode_temp = ObjectUtil.copyProperties(code, ValidateCode.class);
             //设置多少时间后失效
+            System.out.println("xxxxxxxxxxxxxxx" + redis.toString());
             redis.opsForValue().set(buildKey(request, type), validateCode_temp.getCode(), 30, TimeUnit.MINUTES);
         } else {
+            System.out.println("yyyyyyyyyyyyyyy" + redis.toString());
             redis.opsForValue().set(buildKey(request, type), code, 30, TimeUnit.MINUTES);
         }
 

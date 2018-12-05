@@ -68,9 +68,11 @@ public abstract class AbstractOauthValidateCodeProcessor<C extends ValidateCode>
      */
     private void save(ServletWebRequest request, C validateCode) {
         if (validateCode instanceof ImageCode) {
-            ValidateCode validateCode_temp = ObjectUtil.copyProperties(validateCode, ValidateCode.class);
-            validateOauthCodeRepository.save(request, validateCode_temp, getValidateCodeType(request));
+            System.out.println("11111111111111");
+//            ValidateCode validateCode_temp = ObjectUtil.copyProperties(validateCode, ValidateCode.class);
+            validateOauthCodeRepository.save(request, validateCode, getValidateCodeType(request));
         } else {
+            System.out.println("2222222222222222");
             validateOauthCodeRepository.save(request, validateCode, getValidateCodeType(request));
         }
     }
@@ -96,6 +98,7 @@ public abstract class AbstractOauthValidateCodeProcessor<C extends ValidateCode>
         return ValidateCodeType.valueOf(type.toUpperCase());
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public void validate(ServletWebRequest request) {
         ValidateCodeType processorType = getValidateCodeType(request);

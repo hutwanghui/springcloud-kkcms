@@ -28,7 +28,7 @@ public class TokenStoreConfig {
     @Resource
     private DataSource dataSource;
 
-    @Autowired(required = false)
+    @Resource
     private RedisTemplate<String, Object> redisTemplate;
 
 

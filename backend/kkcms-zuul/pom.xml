@@ -100,6 +100,37 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>jib-maven-plugin</artifactId>
+                <version>0.9.10</version>
+                <configuration>
+                    <container>
+                        <ports>
+                            <port>
+                                8960
+                            </port>
+                        </ports>
+                        <jvmFlags>
+                            <jvmFlag>-Xms512m</jvmFlag>
+                            <jvmFlag>-Djava.security.egd=file:/dev/./urandom</jvmFlag>
+                            <jvmFlag>-Dspring.profiles.active=prod</jvmFlag>
+                        </jvmFlags>
+                    </container>
+                    <from>
+                        <!--base image-->
+                        <image>openjdk:8-jre-alpine</image>
+                    </from>
+                    <to>
+                        <image>hutwanghui/kkcms-doc-zuul:0.6</image>
+                        <auth>
+                            <username>hutwanghui</username>
+                            <password>wh970121</password>
+                        </auth>
+                    </to>
+                    <!--<allowInsecureRegistries>true</allowInsecureRegistries>-->
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 

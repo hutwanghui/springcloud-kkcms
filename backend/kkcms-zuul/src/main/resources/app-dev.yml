@@ -1,33 +1,34 @@
 server:
-    port: 8960
-    session:
-      timeout: 600
+  port: 8960
+  session:
+    timeout: 600
 
 spring:
   aop:
-      proxy-target-class: true
+    proxy-target-class: true
   application:
     name: kkcms-zuul
   session:
     store-type: redis
   datasource:
-    username: root
-    password: wh970121
-    url: jdbc:mysql://localhost:3306/kkcms?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8
+    username: wanghui
+    password: wanghui123
+    url: jdbc:mysql://192.168.0.107:53306/kkcms?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false
   redis:
-      host: localhost
-      database: 8
-      pool:
-        max-active: 8
-        min-idle: 0
-        max-idle: 0
-        max-wait: -1
-      password: wh970121
+    host: 172.25.0.4
+    database: 8
+    pool:
+      max-active: 2500
+      min-idle: 100
+      max-idle: 500
+      max-wait: 6000
+    password: wh970121
+    timeout: 100
 
 eureka:
-    client:
-        serviceUrl:
-            defaultZone: http://localhost:8961/eureka/
+  client:
+    serviceUrl:
+      defaultZone: http://192.168.0.107:8961/eureka/
 
 zuul:
   host:
@@ -36,37 +37,37 @@ zuul:
   routes:
     kkcms-user:
       path: /kkcms-user/**
-#      url: http://www.hutwanghui.club:8964/
-      url: http://localhost:8964/
+      #      url: http://www.hutwanghui.club:8964/
+      url: http://192.168.0.107:8964/
       serviceId: kkcms-user
     kkcms-api:
       path: /kkcms-api/**
-#      url: http://www.hutwanghui.club:8962/
-      url: http://localhost:8962/
+      #      url: http://www.hutwanghui.club:8962/
+      url: http://192.168.0.107:8962/
       serviceId: kkcms-api
     kkcms-gate:
       path: /kkcms-gate/**
-#      url: http://www.hutwanghui.club:8965/
-      url: http://localhost:8965/
+      #      url: http://www.hutwanghui.club:8965/
+      url: http://192.168.0.107:8965/
       serviceId: kkcms-gate
     kkcms-app:
       path: /kkcms-app/**
-#      url: http://www.hutwanghui.club:8963/
-      url: http://localhost:8963/
+      #      url: http://www.hutwanghui.club:8963/
+      url: http://192.168.0.107:8963/
       serviceId: kkcms-app
     kkcms-houtai:
       path: /kkcms-houtai/**
-#      url: http://www.hutwanghui.club:8967/
-      url: http://localhost:8967/
+      #      url: http://www.hutwanghui.club:8967/
+      url: http://192.168.0.107:8967/
       serviceId: kkcms-houtai
     kkcms-wx:
       path: /kkcms-wx/**
-#      url: http://www.hutwanghui.club:8966/
-      url: http://localhost:8966/
+      #      url: http://www.hutwanghui.club:8966/
+      url: http://192.168.0.107:8966/
       serviceId: kkcms-wx
     kkcms-movie-recommend:
       path: /kkcms-movie-recommend
-      utl: http://localhost:7777/
+      utl: http://192.168.0.107:7777/
       serviceId: kkcms-movie-recommend
   sensitive-headers:
   add-proxy-headers: true

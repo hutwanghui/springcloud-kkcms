@@ -11,6 +11,7 @@ import org.springframework.security.oauth2.provider.token.DefaultAuthenticationK
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -29,7 +30,7 @@ public class RedisTemplateTokenStore implements TokenStore {
     private static final String CLIENT_ID_TO_ACCESS = "client_id_to_access:";
     private static final String UNAME_TO_ACCESS = "uname_to_access:";
 
-    @Autowired
+    @Resource
     private RedisTemplate redisTemplate;
 
 
@@ -50,6 +51,7 @@ public class RedisTemplateTokenStore implements TokenStore {
     }
 
 
+    @Override
     public OAuth2AccessToken getAccessToken(OAuth2Authentication authentication) {
         String key = authenticationKeyGenerator.extractKey(authentication);
         OAuth2AccessToken accessToken = (OAuth2AccessToken) redisTemplate.opsForValue().get(AUTH_TO_ACCESS + key);
@@ -62,14 +64,17 @@ public class RedisTemplateTokenStore implements TokenStore {
         return accessToken;
     }
 
+    @Override
     public OAuth2Authentication readAuthentication(OAuth2AccessToken token) {
         return readAuthentication(token.getValue());
     }
 
+    @Override
     public OAuth2Authentication readAuthentication(String token) {
         return (OAuth2Authentication) this.redisTemplate.opsForValue().get(AUTH + token);
     }
 
+    @Override
     public OAuth2Authentication readAuthenticationForRefreshToken(OAuth2RefreshToken token) {
         return readAuthenticationForRefreshToken(token.getValue());
     }
@@ -78,6 +83,7 @@ public class RedisTemplateTokenStore implements TokenStore {
         return (OAuth2Authentication) this.redisTemplate.opsForValue().get(REFRESH_AUTH + token);
     }
 
+    @Override
     public void storeAccessToken(OAuth2AccessToken token, OAuth2Authentication authentication) {
         this.redisTemplate.opsForValue().set(ACCESS + token.getValue(), token);
         this.redisTemplate.opsForValue().set(AUTH + token.getValue(), authentication);
@@ -133,10 +139,12 @@ public class RedisTemplateTokenStore implements TokenStore {
     }
 
 
+    @Override
     public void removeAccessToken(OAuth2AccessToken accessToken) {
         removeAccessToken(accessToken.getValue());
     }
 
+    @Override
     public OAuth2AccessToken readAccessToken(String tokenValue) {
         return (OAuth2AccessToken) this.redisTemplate.opsForValue().get(ACCESS + tokenValue);
     }
@@ -166,15 +174,18 @@ public class RedisTemplateTokenStore implements TokenStore {
         }
     }
 
+    @Override
     public void storeRefreshToken(OAuth2RefreshToken refreshToken, OAuth2Authentication authentication) {
         this.redisTemplate.opsForValue().set(REFRESH + refreshToken.getValue(), refreshToken);
         this.redisTemplate.opsForValue().set(REFRESH_AUTH + refreshToken.getValue(), authentication);
     }
 
+    @Override
     public OAuth2RefreshToken readRefreshToken(String tokenValue) {
         return (OAuth2RefreshToken) this.redisTemplate.opsForValue().get(REFRESH + tokenValue);
     }
 
+    @Override
     public void removeRefreshToken(OAuth2RefreshToken refreshToken) {
         removeRefreshToken(refreshToken.getValue());
     }
@@ -185,6 +196,7 @@ public class RedisTemplateTokenStore implements TokenStore {
         this.redisTemplate.delete(REFRESH_TO_ACCESS + tokenValue);
     }
 
+    @Override
     public void removeAccessTokenUsingRefreshToken(OAuth2RefreshToken refreshToken) {
         removeAccessTokenUsingRefreshToken(refreshToken.getValue());
     }
@@ -198,6 +210,7 @@ public class RedisTemplateTokenStore implements TokenStore {
         }
     }
 
+    @Override
     public Collection<OAuth2AccessToken> findTokensByClientIdAndUserName(String clientId, String userName) {
         List<Object> result = redisTemplate.opsForList().range(UNAME_TO_ACCESS + getApprovalKey(clientId, userName), 0, -1);
 
@@ -214,6 +227,7 @@ public class RedisTemplateTokenStore implements TokenStore {
         return Collections.<OAuth2AccessToken>unmodifiableCollection(accessTokens);
     }
 
+    @Override
     public Collection<OAuth2AccessToken> findTokensByClientId(String clientId) {
         List<Object> result = redisTemplate.opsForList().range((CLIENT_ID_TO_ACCESS + clientId), 0, -1);
 
