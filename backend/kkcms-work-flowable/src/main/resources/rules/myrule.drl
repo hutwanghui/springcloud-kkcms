@@ -1,0 +1,20 @@
+package org.hut.kkcmsworkflowable;
+
+import org.hut.kkcmsworkflowable.entity.ApplyInfo;
+import org.hut.kkcmsworkflowable.entity.ApplyInfoCheckResult;
+
+import java.lang.Number
+
+
+rule "myrule"
+	dialect "java"
+	when
+	    applyInfoCheckResult : ApplyInfoCheckResult()
+		applyInfo: ApplyInfo( familyAddress != null , familyAddress.province == "浙江省" , age >= 18 )
+	then
+		applyInfo.setName( "浙江省应届毕业生" );
+		applyInfoCheckResult.setPostCodeResult(true);
+//		insertLogical( fact0 );
+        retract(applyInfo);
+		System.out.println("浙江省应届毕业生验证通过");
+end

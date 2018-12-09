@@ -1,0 +1,36 @@
+spring:
+  application:
+    name: kkcms-work-flowable
+  datasource:
+    name: flowable
+    url: jdbc:mysql://192.168.0.107:53306/flowable?useUnicode=true&characterEncoding=UTF8&useSSL=false&autoReconnect=true&failOverReadOnly=false
+    username: wanghui
+    password: wanghui123
+    driver-class-name: com.mysql.jdbc.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+  session:
+    store-type: none
+
+security:
+  basic:
+    enabled: false
+  user:
+    name: admin
+    password: admin123456
+
+flowable:
+  async-executor-activate: false
+  database-schema-update: false
+
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://192.168.0.107:8961/eureka/
+
+server:
+  port: 8888
