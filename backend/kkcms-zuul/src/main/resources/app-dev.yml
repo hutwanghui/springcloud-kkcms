@@ -13,7 +13,7 @@ spring:
   datasource:
     username: wanghui
     password: wanghui123
-    url: jdbc:mysql://192.168.0.107:53306/kkcms?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false
+    url: jdbc:mysql://192.168.1.26:53306/kkcms?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false
   redis:
     host: 172.25.0.4
     database: 8
@@ -28,7 +28,7 @@ spring:
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://192.168.0.107:8961/eureka/
+      defaultZone: http://192.168.1.26:8961/eureka/
 
 zuul:
   host:
@@ -38,36 +38,36 @@ zuul:
     kkcms-user:
       path: /kkcms-user/**
       #      url: http://www.hutwanghui.club:8964/
-      url: http://192.168.0.107:8964/
+      url: http://192.168.1.26:8964/
       serviceId: kkcms-user
     kkcms-api:
       path: /kkcms-api/**
       #      url: http://www.hutwanghui.club:8962/
-      url: http://192.168.0.107:8962/
+      url: http://192.168.1.26:8962/
       serviceId: kkcms-api
     kkcms-gate:
       path: /kkcms-gate/**
       #      url: http://www.hutwanghui.club:8965/
-      url: http://192.168.0.107:8965/
+      url: http://192.168.1.26:8965/
       serviceId: kkcms-gate
     kkcms-app:
       path: /kkcms-app/**
       #      url: http://www.hutwanghui.club:8963/
-      url: http://192.168.0.107:8963/
+      url: http://192.168.1.26:8963/
       serviceId: kkcms-app
     kkcms-houtai:
       path: /kkcms-houtai/**
       #      url: http://www.hutwanghui.club:8967/
-      url: http://192.168.0.107:8967/
+      url: http://192.168.1.26:8967/
       serviceId: kkcms-houtai
     kkcms-wx:
       path: /kkcms-wx/**
       #      url: http://www.hutwanghui.club:8966/
-      url: http://192.168.0.107:8966/
+      url: http://192.168.1.26:8966/
       serviceId: kkcms-wx
     kkcms-movie-recommend:
       path: /kkcms-movie-recommend
-      utl: http://192.168.0.107:7777/
+      utl: http://192.168.1.26:7777/
       serviceId: kkcms-movie-recommend
   sensitive-headers:
   add-proxy-headers: true

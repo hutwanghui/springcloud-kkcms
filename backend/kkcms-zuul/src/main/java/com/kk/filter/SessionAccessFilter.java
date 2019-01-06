@@ -97,12 +97,13 @@ public class SessionAccessFilter extends ZuulFilter {
             return null;
         }
         String auth = request.getHeader("Authorization");
-        System.out.println("~~~~~~~~~~~~~~" + auth);
+        log.info("Header中携带的认证头信息为:" + auth);
         if (auth.split(" ")[0].equals("Basic")) {
             passZullPorxy(ctx);
             return null;
         }
         String accessToken = auth.split(" ")[1];
+        log.info("请求中携带的Token为:" + accessToken);
         if (redisTokenStore.readAccessToken(accessToken) != null) {
             log.info("access token is ok!!!");
             passZullPorxy(ctx);
