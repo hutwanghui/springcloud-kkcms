@@ -11,7 +11,7 @@ spring:
   session:
     store-type: redis
   redis:
-    host: 192.168.0.107
+    host: 192.168.1.26
     database: 9
     pool:
       max-active: 8
@@ -21,7 +21,7 @@ spring:
     password: wh970121
   datasource:
     name: kkcms
-    url: jdbc:mysql://192.168.0.107:53306/kkcms?useUnicode=true&characterEncoding=UTF8&useSSL=true&allowMultiQueries=true
+    url: jdbc:mysql://192.168.1.26:53306/kkcms?useUnicode=true&characterEncoding=UTF8&useSSL=true&allowMultiQueries=true
     username: wanghui
     password: wanghui123
     driver-class-name: com.mysql.jdbc.Driver
@@ -67,7 +67,7 @@ spring:
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://192.168.0.107:8961/eureka/
+      defaultZone: http://192.168.1.26:8961/eureka/
 
 
 

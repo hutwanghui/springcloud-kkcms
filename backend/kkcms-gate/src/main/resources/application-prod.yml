@@ -7,7 +7,7 @@ spring:
   application:
     name: kkcms-gate
   redis:
-    host: 192.168.0.107
+    host: 192.168.1.26
     database: 2
     pool:
       max-active: 2500
@@ -19,14 +19,14 @@ spring:
     timeout: 100
   datasource:
     name: kkcms
-    url: jdbc:mysql://192.168.0.107:53306/kkcms?useUnicode=true&characterEncoding=UTF8&useSSL=false
+    url: jdbc:mysql://192.168.1.26:53306/kkcms?useUnicode=true&characterEncoding=UTF8&useSSL=false
     username: wanghui
     password: wanghui123
     driver-class-name: com.mysql.jdbc.Driver
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://192.168.0.107:8961/eureka/
+      defaultZone: http://192.168.1.26:8961/eureka/
 
 ribbon:
   eureka:

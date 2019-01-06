@@ -4,6 +4,8 @@ import com.kk.gate.config.properties.ValidateProperties;
 import com.kk.gate.validate.code.image.entity.ImageCode;
 import com.kk.gate.validate.code.image.ImageCodeGenerator;
 import com.kk.gate.validate.code.ValidateCodeGeneratorImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +22,8 @@ import java.util.Random;
  */
 @Service(value = "imageValidateCodeGenerator")
 public class ImageCodeGeneratorImpl extends ValidateCodeGeneratorImpl implements ImageCodeGenerator {
+
+    private static Logger logger = LoggerFactory.getLogger(ImageCodeGeneratorImpl.class);
 
     @Resource
     private ValidateProperties validateProperties;
@@ -48,10 +52,11 @@ public class ImageCodeGeneratorImpl extends ValidateCodeGeneratorImpl implements
 
     @Override
     public ImageCode generateValidateCode() throws IOException {
+        logger.info(">>>>>>>>>>>>>>>随机生成的验证码>>>>>>>>>>>>>>");
         String code = generateVerifyCode(validateProperties.getImageCode().getSize());
-        System.out.println("&&&&&&&&&&随机生成的验证码是:" + code + "&&&&&&&&&&&&&");
-        System.out.println("长度：" + validateProperties.getImageCode().getWidth() + "高度：" + validateProperties.getImageCode().getHeight());
+        logger.info("随机生成的验证码是:" + code + "");
         BufferedImage bufferedImage = outputImage(validateProperties.getImageCode().getWidth(), validateProperties.getImageCode().getHeight(), code);
+        logger.info("<<<<<<<<<<<<<<<随机生成的验证码<<<<<<<<<<<<<<<");
         return new ImageCode(bufferedImage, code, validateProperties.getImageCode().getExpireIn());
     }
 
@@ -108,27 +113,19 @@ public class ImageCodeGeneratorImpl extends ValidateCodeGeneratorImpl implements
             int rgb = getRandomIntColor();
             image.setRGB(x, y, rgb);
         }
-
         shear(g2, w, h, c);// 使图片扭曲
-
         g2.setColor(getRandColor(100, 160));
         int fontSize = h - 4;
-        System.out.println("111111111111111111111111");
         g2.setFont(new Font("Times New Roman", Font.PLAIN, 18));
         char[] chars = code.toCharArray();
         for (int i = 0; i < verifySize; i++) {
             AffineTransform affine = new AffineTransform();
             affine.setToRotation(Math.PI / 4 * rand.nextDouble() * (rand.nextBoolean() ? 1 : -1), (w / verifySize) * i + fontSize / 2, h / 2);
             g2.setTransform(affine);
-            System.out.println("1:" + chars);
-            System.out.println("2:" + verifySize);
-            System.out.println("3:" + fontSize);
             g2.drawChars(chars, i, 1, ((w - 10) / verifySize) * i + 5, h / 2 + fontSize / 2 - 10);
         }
-
         g2.dispose();
 //        ImageIO.write(image, "jpg", os);
-        System.out.println("=========" + image.toString());
         return image;
     }
 

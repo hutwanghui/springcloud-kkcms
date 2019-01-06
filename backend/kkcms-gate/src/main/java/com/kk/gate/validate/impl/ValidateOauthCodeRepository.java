@@ -6,6 +6,8 @@ import com.kk.gate.validate.ValidateCodeType;
 import com.kk.gate.validate.code.image.entity.ImageCode;
 import com.kk.gate.validate.vo.ValidateCode;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -21,6 +23,8 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class ValidateOauthCodeRepository {
 
+    private static Logger logger = LoggerFactory.getLogger(ValidateOauthCodeRepository.class);
+
     String OAUTH_KEY_PREFIX = "OAUTH_KEY_FOR_CODE_";
 
     @Qualifier("redisTemplate")
@@ -29,25 +33,27 @@ public class ValidateOauthCodeRepository {
 
 
     public void save(ServletWebRequest request, ValidateCode code, ValidateCodeType type) {
-        System.out.println("xxxxxxxxxxxxxxx");
+        logger.info(">>>>>>>>>>>>>>>将验证码save进redis中>>>>>>>>>>>>>>");
         if (code instanceof ImageCode) {
             ValidateCode validateCode_temp = ObjectUtil.copyProperties(code, ValidateCode.class);
             //设置多少时间后失效
-            System.out.println("xxxxxxxxxxxxxxx" + redis.toString());
             redis.opsForValue().set(buildKey(request, type), validateCode_temp.getCode(), 30, TimeUnit.MINUTES);
         } else {
-            System.out.println("yyyyyyyyyyyyyyy" + redis.toString());
             redis.opsForValue().set(buildKey(request, type), code, 30, TimeUnit.MINUTES);
         }
-
+        logger.info("<<<<<<<<<<<<<<<将验证码save进redis中<<<<<<<<<<<<<<<");
     }
 
     public ValidateCode get(ServletWebRequest request, ValidateCodeType type) {
+        logger.info(">>>>>>>>>>>>>>>将验证码从redis中取出>>>>>>>>>>>>>>");
         Object value = redis.opsForValue().get(buildKey(request, type));
+        logger.info("value=" + value.toString());
         if (value == null) {
             return null;
         }
-        return (ValidateCode) value;
+        logger.info("<<<<<<<<<<<<<<<将验证码从redis中取出<<<<<<<<<<<<<<<");
+        logger.info("注意：300秒后过期");
+        return new ValidateCode(value.toString(),300);
     }
 
     public void remove(ServletWebRequest request, ValidateCodeType type) {
